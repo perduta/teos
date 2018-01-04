@@ -1,0 +1,11 @@
+buildUbuntu
+buildWindows
+build
+**/x64
+**/Debug
+*.ilk
+*.exe
+*.a
+*.lib
+**/.vs
+

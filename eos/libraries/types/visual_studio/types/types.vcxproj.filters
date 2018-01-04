@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\eos">
+      <UniqueIdentifier>{652427a2-d6b2-473b-af50-2321e872dba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\eos\types">
+      <UniqueIdentifier>{eabe2124-ff28-4259-8942-b7c1012e3092}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\abi_serializer.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\asset.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\exceptions.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\generated.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\native.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\native_impl.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\public_key.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\type_parser.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\types.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\WrenDatastream.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\eos\types\WrenInt.hpp">
+      <Filter>Header Files\eos\types</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\abi_serializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\asset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\native.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public_key.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\type_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\type_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
