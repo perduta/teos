@@ -146,3 +146,8 @@ c1 : fatal error C1083: Cannot open source file: '..\..\..\..\..\..\C_INCLUDE\Op
 ... is issued when a VS project, having included header files mixed with source ones, is moved. The only method to cure it is to edit the project definition file, excluding offending entries.
 
 
+### GetUserProfileDirectoryW
+
+Userenv.lib
+
+

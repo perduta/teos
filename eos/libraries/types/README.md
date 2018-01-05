@@ -12,6 +12,8 @@ using uint128_t = boost::multiprecision::uint128_t;
 
 ## static_assert
 
+E:\Workspaces\EOS\Pentagon\eos\libraries\fc\include\fc\io\raw.hpp [690] [695] commented out./////////////////////////////////////
+
 E:\Workspaces\EOS\Pentagon\eos\libraries\fc\include\fc\io\raw.hpp [692]
 ```
     template<typename Stream, typename T> void pack( Stream& s, const boost::multiprecision::number<T>& n ) {

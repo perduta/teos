@@ -15,6 +15,8 @@ list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules" )
 message(STATUS "CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
 if( WIN32 )
+  add_definitions( -D_WIN32_WINNT=0x0501 )
+  add_compile_options( /std:c++14 )
 endif( WIN32 )
 
 ####################### DEPENDENCIES
@@ -35,6 +37,8 @@ find_package(Boost 1.62 REQUIRED COMPONENTS
   date_time 
   program_options
   filesystem
+  regex
+  thread
 )
 if( Boost_FOUND )
   message( STATUS "Boost found.
@@ -96,6 +100,9 @@ add_executable( ${APPL_NAME} test.cpp )
 
 target_include_directories( ${APPL_NAME} 
   PUBLIC
+  ${Boost_INCLUDE_DIR}
+  ${OPENSSL_INCLUDE_DIR}
+  ${SECP256K1_INCLUDE_DIR}
   libraries/fc/include
   libraries/types/include
   libraries/utilities/include
@@ -104,8 +111,32 @@ target_include_directories( ${APPL_NAME}
 target_link_libraries( ${APPL_NAME}
   ${Boost_LIBRARIES} 
   ${OPENSSL_LIBRARIES}
-  ${Secp256k1_LIBRARIES}
   fc
   eos_types
   eos_utilities
-)  
+)
+
+if( NOT EOS_ECC_IMPL STREQUAL openssl )
+  target_link_libraries( ${APPL_NAME}
+    ${SECP256K1_LIBRARIES}
+  )
+endif()
+
+if( WIN32 )
+  target_include_directories( ${APPL_NAME}
+    PUBLIC
+    ${OPENSSL_INCLUDE_DIR}
+  )
+
+  if( NOT EOS_ECC_IMPL STREQUAL openssl )
+    target_link_libraries( ${APPL_NAME}
+      ${SECP256K1_LIBRARIES_DIR}/gcc.lib
+    )
+  endif()
+
+  target_link_libraries( ${APPL_NAME}
+    "$(WindowsSDK_LibraryPath)/x64/crypt32.lib"
+    "$(VC_ReferencesPath_VC_x64)/legacy_stdio_definitions.lib"
+    "Userenv.lib"
+  )
+endif( WIN32 )

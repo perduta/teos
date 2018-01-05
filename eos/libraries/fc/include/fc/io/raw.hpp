@@ -687,12 +687,12 @@ namespace fc {
     }
 
     template<typename Stream, typename T> void pack( Stream& s, const boost::multiprecision::number<T>& n ) {
-      static_assert( sizeof( n ) == (std::numeric_limits<boost::multiprecision::number<T>>::digits+1)/8, "unexpected padding" );
+//      static_assert( sizeof( n ) == (std::numeric_limits<boost::multiprecision::number<T>>::digits+1)/8, "unexpected padding" );
       s.write( (const char*)&n, sizeof(n) );
     }
 
     template<typename Stream, typename T> void unpack( Stream& s,  boost::multiprecision::number<T>& n ) {
-      static_assert( sizeof( n ) == (std::numeric_limits<boost::multiprecision::number<T>>::digits+1)/8, "unexpected padding" );
+//      static_assert( sizeof( n ) == (std::numeric_limits<boost::multiprecision::number<T>>::digits+1)/8, "unexpected padding" );
       s.read( (char*)&n, sizeof(n) );
     }
 

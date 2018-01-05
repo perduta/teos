@@ -106,10 +106,10 @@ target_link_libraries( fc
   ${CMAKE_DL_LIBS}
 )
 
-if( NOT (APPLE OR WINDOWS) )
+if( NOT (APPLE OR WIN32) )
   set( pthread_library pthread )
   target_link_libraries( fc PUBLIC rt )
-endif( NOT (APPLE OR WINDOWS) )
+endif( NOT (APPLE OR WIN32) )
 
 if( NOT EOS_ECC_IMPL STREQUAL openssl )
   target_link_libraries( fc 
