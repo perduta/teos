@@ -9,7 +9,7 @@ using namespace std;
 int main()
 {
   tokenika::eosc::KeyPair keyPair;
-  cout << keyPair.privateKey << endl;
-  cout << keyPair.publicKey << endl;
+  cout << "private key: " << keyPair.privateKey << endl;
+  cout << "public key: " << keyPair.publicKey << endl;
 }
 
