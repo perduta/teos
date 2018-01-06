@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.8 )
-project( Tokenika_EOS )
+project( Tokenika_eos )
 
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 5)
@@ -76,7 +76,7 @@ if( NOT EOS_ECC_IMPL STREQUAL openssl )
     message( STATUS "gmp not found. set environment variables:
     GMP_DIR (for example, E:/C_INCLUDE/gmp)
     ")
-  endif( GMP_FOUND )
+  endif( GMP_FOUND )Tokenika_EOS
 
   find_package(Secp256k1 REQUIRED)
   if( SECP256K1_FOUND )
@@ -106,6 +106,7 @@ target_include_directories( ${APPL_NAME}
 )
 
 target_link_libraries( ${APPL_NAME}
+  PUBLIC
   eosc_helper
 )
 ####################################### /testxx
