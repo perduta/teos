@@ -23,5 +23,12 @@ namespace tokenika {
       publicKey = string(eosio::types::public_key(pk.get_public_key()));
       privateKey = eosio::utilities::key_to_wif(pk.get_secret());
     }
+
+    string KeyPair::privateK() {
+      KeyPair kp;
+      return kp.privateKey;
+    }
+    
+    string KeyPair::prk = KeyPair::privateK();
   }
 }

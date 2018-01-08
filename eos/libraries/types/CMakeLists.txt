@@ -1,4 +1,6 @@
-add_library( eos_types STATIC
+set( LIB_NAME eos_types)
+
+add_library( ${LIB_NAME} STATIC
   asset.cpp
   public_key.cpp
   type_parser.cpp
@@ -7,8 +9,8 @@ add_library( eos_types STATIC
   types.eos
 )
 
-target_include_directories( eos_types
-  PRIVATE
+target_include_directories( ${LIB_NAME}
+  PUBLIC
   ${Boost_INCLUDE_DIR}
   ${OPENSSL_INCLUDE_DIR}
   ../fc/include
@@ -18,13 +20,21 @@ target_include_directories( eos_types
   include
 )
 
-target_link_libraries( eos_types 
-  PRIVATE
+target_link_libraries( ${LIB_NAME} 
+  PUBLIC
   ${Boost_LIBRARIES} 
   ${OPENSSL_LIBRARIES}
   ${Secp256k1_LIBRARIES}
-  ${GMP_LIBRARIES} 
+  ${GMP_LIBRARIES}
+  
+  PUBLIC
   eos_utilities 
   fc 
 )
-  
+
+install( DIRECTORY include DESTINATION . )
+install(
+  TARGETS ${LIB_NAME} 
+  LIBRARY DESTINATION lib 
+  ARCHIVE DESTINATION lib
+)

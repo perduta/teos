@@ -5,7 +5,7 @@ add_library( ${LIB_NAME} STATIC
 )
 
 target_include_directories( ${LIB_NAME} 
-  PRIVATE
+  PUBLIC
   ${Boost_INCLUDE_DIR}
   ${OPENSSL_INCLUDE_DIR}
   ../libraries/fc/include
@@ -18,16 +18,18 @@ target_include_directories( ${LIB_NAME}
 
 if( NOT EOS_ECC_IMPL STREQUAL openssl )
   target_include_directories( ${LIB_NAME}
-    PRIVATE
+    PUBLIC
     ${SECP256K1_INCLUDE_DIR}
     ${GMP_INCLUDE_DIR}
   )
 endif()
 
 target_link_libraries( ${LIB_NAME}
-  PRIVATE
+  PUBLIC
   ${Boost_LIBRARIES} 
   ${OPENSSL_LIBRARIES}
+
+  PUBLIC
   fc
   eos_types
   eos_utilities
@@ -35,7 +37,7 @@ target_link_libraries( ${LIB_NAME}
 
 if( NOT EOS_ECC_IMPL STREQUAL openssl )
   target_link_libraries( ${LIB_NAME}
-    PRIVATE
+    PUBLIC
     ${SECP256K1_LIBRARIES}
     ${GMP_LIBRARIES}
   )
@@ -49,23 +51,22 @@ if( WIN32 )
 
   if( NOT EOS_ECC_IMPL STREQUAL openssl )
     target_link_libraries( ${LIB_NAME}
-      PRIVATE
+      PUBLIC
       ${SECP256K1_LIBRARIES_DIR}/gcc.lib
     )
   endif()
 
   target_link_libraries( ${LIB_NAME}
-    PRIVATE
+    PUBLIC
     "$(WindowsSDK_LibraryPath)/x64/crypt32.lib"
     "$(VC_ReferencesPath_VC_x64)/legacy_stdio_definitions.lib"
     "Userenv.lib"
   )
 endif( WIN32 )
 
-
-set( INSTALL_ROOT_DIR ${CMAKE_SOURCE_DIR})
-install( DIRECTORY include DESTINATION ${INSTALL_ROOT_DIR}/install/include )
-install( TARGETS ${LIB_NAME} 
-  LIBRARY DESTINATION ${INSTALL_ROOT_DIR}/install/lib PERMISSIONS WORLD_WRITE
-  ARCHIVE DESTINATION ${INSTALL_ROOT_DIR}/install/lib PERMISSIONS WORLD_WRITE
+install( DIRECTORY include DESTINATION . )
+install(
+  TARGETS ${LIB_NAME} 
+  LIBRARY DESTINATION lib 
+  ARCHIVE DESTINATION lib
 )

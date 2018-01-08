@@ -6,6 +6,7 @@ set(VERSION_MINOR 5)
 set( EOS_ECC_IMPL secp256k1 ) ## secp256k1 or openssl or mixed
 set( EOS_BUILD_RANGE eosc) ## eosc or all
 set(cmake_build_type debug)
+set( CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
 
 set( CMAKE_CXX_STANDARD 14 )
 set( BUILD_SHARED_LIBS NO )
@@ -18,6 +19,8 @@ if( WIN32 )
   add_definitions( -D_WIN32_WINNT=0x0501 )
   add_compile_options( /std:c++14 )
 endif( WIN32 )
+
+add_compile_options( -fPIC ) # for shared eosc_helper
 
 ####################################### DEPENDENCIES
 
@@ -76,7 +79,7 @@ if( NOT EOS_ECC_IMPL STREQUAL openssl )
     message( STATUS "gmp not found. set environment variables:
     GMP_DIR (for example, E:/C_INCLUDE/gmp)
     ")
-  endif( GMP_FOUND )Tokenika_EOS
+  endif( GMP_FOUND )
 
   find_package(Secp256k1 REQUIRED)
   if( SECP256K1_FOUND )
@@ -94,19 +97,5 @@ endif( NOT EOS_ECC_IMPL STREQUAL openssl )
 ####################################### /DEPENDENCIES
 
 add_subdirectory( libraries )
-add_subdirectory(eosc_helper)
-
-####################################### testxx
-set( APPL_NAME "testxx" )
-add_executable( ${APPL_NAME} test.cpp )
-
-target_include_directories( ${APPL_NAME} 
-  PUBLIC
-  eosc_helper/include
-)
-
-target_link_libraries( ${APPL_NAME}
-  PUBLIC
-  eosc_helper
-)
-####################################### /testxx
+add_subdirectory( eosc_helper )
+add_subdirectory( programs/eosc )

@@ -1,3 +1,5 @@
+set( LIB_NAME fc)
+
 if( NOT EOS_ECC_IMPL )
   set( EOS_ECC_IMPL openssl)
 endif( NOT EOS_ECC_IMPL )
@@ -18,7 +20,7 @@ else( EOS_ECC_IMPL STREQUAL openssl )
   endif( EOS_ECC_IMPL STREQUAL mixed )
 endif( EOS_ECC_IMPL STREQUAL openssl )
 
-add_library( fc STATIC
+add_library( ${LIB_NAME} STATIC
   src/uint128.cpp
   src/real128.cpp
   src/variant.cpp
@@ -78,18 +80,18 @@ add_library( fc STATIC
 )
 
 #if( EOS_BUILD_RANGE STREQUAL eosc OR EOS_BUILD_RANGE STREQUAL all )
-#target_sources( fc PUBLIC
+#target_sources( ${LIB_NAME} PUBLIC
 #)
 #endif( EOS_BUILD_RANGE STREQUAL eosc OR EOS_BUILD_RANGE STREQUAL all )
 
 #if( EOS_BUILD_RANGE STREQUAL all )
-#  target_sources( fc 
+#  target_sources( ${LIB_NAME} 
 #  PUBLIC
 #)
 #endif( EOS_BUILD_RANGE STREQUAL all )
 
-target_include_directories(fc 
-  PRIVATE 
+target_include_directories(${LIB_NAME} 
+  PUBLIC 
   ${Boost_INCLUDE_DIR}
   ${OPENSSL_INCLUDE_DIR}
   ${SECP256K1_INCLUDE_DIR}
@@ -99,8 +101,8 @@ target_include_directories(fc
   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/websocketpp
 )
 
-target_link_libraries( fc 
-  PRIVATE
+target_link_libraries( ${LIB_NAME} 
+  PUBLIC
   ${Boost_LIBRARIES} 
   ${OPENSSL_LIBRARIES}
   ${CMAKE_DL_LIBS}
@@ -108,13 +110,20 @@ target_link_libraries( fc
 
 if( NOT (APPLE OR WIN32) )
   set( pthread_library pthread )
-  target_link_libraries( fc PUBLIC rt )
+  target_link_libraries( ${LIB_NAME} PUBLIC rt )
 endif( NOT (APPLE OR WIN32) )
 
 if( NOT EOS_ECC_IMPL STREQUAL openssl )
-  target_link_libraries( fc 
-    PRIVATE 
+  target_link_libraries( ${LIB_NAME} 
+    PUBLIC 
     ${SECP256K1_LIBRARIES}
     ${GMP_LIBRARIES}
   )
 endif( NOT EOS_ECC_IMPL STREQUAL openssl )
+
+install( DIRECTORY include DESTINATION . )
+install(
+  TARGETS ${LIB_NAME} 
+  LIBRARY DESTINATION lib 
+  ARCHIVE DESTINATION lib
+)

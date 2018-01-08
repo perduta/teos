@@ -1,12 +1,14 @@
-add_library(eos_utilities STATIC 
+set( LIB_NAME eos_utilities)
+
+add_library(${LIB_NAME} STATIC 
   key_conversion.cpp
   string_escape.cpp
   tempdir.cpp
   words.cpp
 )
 
-target_include_directories( eos_utilities 
-  PRIVATE
+target_include_directories( ${LIB_NAME} 
+  PUBLIC
   ${Boost_INCLUDE_DIR}
   ${OPENSSL_INCLUDE_DIR}
   ../fc/include
@@ -15,12 +17,21 @@ target_include_directories( eos_utilities
   include
 )
 
-target_link_libraries( eos_utilities
-  PRIVATE
+target_link_libraries( ${LIB_NAME}
+  PUBLIC
   ${Boost_LIBRARIES} 
   ${OPENSSL_LIBRARIES}
   ${Secp256k1_LIBRARIES}
-  ${GMP_LIBRARIES}   
+  ${GMP_LIBRARIES}
+  
+  PUBLIC
   eos_types 
   fc 
+)
+
+install( DIRECTORY include DESTINATION . )
+install(
+  TARGETS ${LIB_NAME} 
+  LIBRARY DESTINATION lib 
+  ARCHIVE DESTINATION lib
 )
