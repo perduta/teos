@@ -4,7 +4,7 @@ project( Tokenika_eos )
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 5)
 set( EOS_ECC_IMPL secp256k1 ) ## secp256k1 or openssl or mixed
-set( EOS_BUILD_RANGE eosc) ## eosc or all
+set( EOS_BUILD_RANGE teos) ## teos or all
 set(cmake_build_type debug)
 set( CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
 
@@ -20,7 +20,7 @@ if( WIN32 )
   add_compile_options( /std:c++14 )
 endif( WIN32 )
 
-add_compile_options( -fPIC ) # for shared eosc_helper
+add_compile_options( -fPIC ) # for shared teos_helper
 
 ####################################### DEPENDENCIES
 
@@ -97,5 +97,5 @@ endif( NOT EOS_ECC_IMPL STREQUAL openssl )
 ####################################### /DEPENDENCIES
 
 add_subdirectory( libraries )
-add_subdirectory( eosc_helper )
-add_subdirectory( programs/eosc )
+add_subdirectory( teos_helper )
+add_subdirectory( programs/teos )

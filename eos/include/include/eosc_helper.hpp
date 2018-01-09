@@ -7,7 +7,7 @@
 using namespace std;
 
 namespace tokenika{ 
-  namespace eosc{
+  namespace teos{
 
     class KeyPair {
 

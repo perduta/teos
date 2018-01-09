@@ -79,10 +79,10 @@ add_library( ${LIB_NAME} STATIC
   src/network/url.cpp
 )
 
-#if( EOS_BUILD_RANGE STREQUAL eosc OR EOS_BUILD_RANGE STREQUAL all )
+#if( EOS_BUILD_RANGE STREQUAL teos OR EOS_BUILD_RANGE STREQUAL all )
 #target_sources( ${LIB_NAME} PUBLIC
 #)
-#endif( EOS_BUILD_RANGE STREQUAL eosc OR EOS_BUILD_RANGE STREQUAL all )
+#endif( EOS_BUILD_RANGE STREQUAL teos OR EOS_BUILD_RANGE STREQUAL all )
 
 #if( EOS_BUILD_RANGE STREQUAL all )
 #  target_sources( ${LIB_NAME} 

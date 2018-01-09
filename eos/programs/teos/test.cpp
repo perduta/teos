@@ -12,4 +12,3 @@ int main()
   cout << "private key: " << keyPair.privateKey << endl;
   cout << "public key: " << keyPair.publicKey << endl;
 }
-
