@@ -12,3 +12,5 @@ buildWindows
 **/teos.pdb
 **/teosLib.lib
 **/teosLib.pdp
+teos_visual_studio
+
