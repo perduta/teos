@@ -9,11 +9,6 @@
 #include <openssl/sha.h>
 #include <openssl/obj_mac.h>
 
-#ifdef _MSC_VER
-// secp256k1 needs it, if compiled with mingw, at least.
-extern "C" { FILE __iob_func[]; }
-#endif // _MSC_VER
-
 /** 
  * @file openssl.hpp
  * Provides common utility calls for wrapping openssl c api.

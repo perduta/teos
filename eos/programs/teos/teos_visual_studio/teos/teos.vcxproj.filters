@@ -18,13 +18,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\teos.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\teos_test.hpp">
+    <ClInclude Include="..\..\teoslib\subcommands.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\teoslib\teos_command.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\teoslib\teos_create_commands.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\teoslib\teos_get_commands.hpp">
@@ -36,7 +36,7 @@
     <ClInclude Include="..\..\teoslib\teos_wallet_commands.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\teoslib\subcommands.hpp">
+    <ClInclude Include="..\..\teos_test.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +47,5 @@
     <ClCompile Include="..\..\teos_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="teos_config.json">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -21,6 +21,17 @@
 #include "teos_test.hpp"
 #include "teoslib/subcommands.hpp"
 
+#ifdef _MSC_VER
+
+// https://msdn.microsoft.com/en-us/library/bb531344.aspx#BK_CRT
+
+static FILE arr[3];
+extern "C" FILE*  __cdecl __iob_func(void) {
+  return arr;
+}
+
+#endif // _MSC_VER
+
 #define IF_ELSE(commandName_, classPrefix)                          \
   if (commandName == #commandName_)                                 \
   {                                                                 \
@@ -60,6 +71,8 @@ std::map<const std::string, const std::string> subcommandMap = {
   { "benchmark", benchmarkSubcommands },
   { "push", pushSubcommands }
 };
+
+
 
 int main(int argc, const char *argv[])
 {

@@ -20,8 +20,6 @@ if( WIN32 )
   add_compile_options( /std:c++14 )
 endif( WIN32 )
 
-add_compile_options( -fPIC ) # for shared teos_helper
-
 ####################################### DEPENDENCIES
 
 set( Boost_USE_STATIC_LIBS ON )

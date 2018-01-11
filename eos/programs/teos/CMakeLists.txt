@@ -5,7 +5,7 @@ set(VERSION_MAJOR 0)
 set(VERSION_MINOR 5)
 set(cmake_build_type debug)
 set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake")
-include(cotire)
+#include(cotire)
 include("${PROJECT_SOURCE_DIR}/CMake/config.cmake")
 
 set(VERSION_MAJOR 0)
@@ -74,29 +74,19 @@ target_include_directories( ${APPL_NAME}
 )
 target_link_libraries( ${APPL_NAME}
   PRIVATE
-  teoslib 
+  teoslib
+  teos_helper
 )
 
 add_executable( "teos_lib_test" teos_lib_test.cpp )
 target_link_libraries( "teos_lib_test" 
   PRIVATE
   teoslib
-)
-
-cotire(${APPL_NAME})
-
-install(TARGETS ${APPL_NAME} RUNTIME DESTINATION bin)
-
-#######################################
-
-add_executable( "testxxx" test.cpp )
-target_include_directories( "testxxx"
-  PUBLIC
-  ${CMAKE_SOURCE_DIR}/teos_helper/include
-)
-target_link_libraries( "testxxx"
   teos_helper
 )
 
-#######################################
+#cotire(${APPL_NAME})
+
+install(TARGETS ${APPL_NAME} RUNTIME DESTINATION bin)
+
 

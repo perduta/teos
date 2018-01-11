@@ -8,11 +8,6 @@
 #include <string>
 #include <stdlib.h>
 
-#ifdef _MSC_VER
-// secp256k1 needs it, if compiled with mingw, at least.
-FILE __iob_func[3] = { *stdin,*stdout,*stderr };
-#endif // _MSC_VER
-
 namespace  fc 
 {
     struct openssl_scope

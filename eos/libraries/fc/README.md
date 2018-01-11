@@ -104,7 +104,8 @@ $(OPENSSL_ROOT_DIR)/lib/VC/static/libeay32MT.lib
 $(SolutionDir)lib/fc.lib
 $(SolutionDir)lib/utilities.lib
 $(C_INCLUDE)\secp256k1\lib\libsecp256k1.a
-$(C_INCLUDE)\secp256k1\lib\libgcc.a
+$(C_INCLUDE)\secp256k1\lib\gcc.lib # unresolved ___chkstk_ms error
+$(C_INCLUDE)\secp256k1\lib\msvcrt.lib # unresolved  __iob_func error
 $(WindowsSDK_LibraryPath)\x64\crypt32.lib
 $(MS_BUILD)\..\..\..\..\VC\Tools\MSVC\14.12.25827\lib\x64\legacy_stdio_definitions.lib
 $(WindowsSDK_LibraryPath)\x64\crypt32.lib # unresolved __imp_CertOpenStore error
@@ -114,7 +115,7 @@ $(WindowsSDK_LibraryPath)\x64\crypt32.lib # unresolved __imp_CertOpenStore error
 Get OpenSSL for Windows, Properties > Linker > Input > Additional Dependencies:
 $(C_INCLUDE)/openssl-1.0.1q-vs2015/lib/libeay32MT.lib
 
-## __iob_func
+## __iob_func see: $(C_INCLUDE)\secp256k1\lib\msvcrt.lib # __iob_func is there
 
 `secp256k1.lib(libsecp256k1_la-secp256k1.o) : error LNK2019: unresolved external symbol __imp___iob_func referenced in function checked_malloc.part.10`
 
@@ -146,7 +147,7 @@ c1 : fatal error C1083: Cannot open source file: '..\..\..\..\..\..\C_INCLUDE\Op
 ... is issued when a VS project, having included header files mixed with source ones, is moved. The only method to cure it is to edit the project definition file, excluding offending entries.
 
 
-### GetUserProfileDirectoryW
+### unresolved GetUserProfileDirectoryW error
 
 Userenv.lib
 

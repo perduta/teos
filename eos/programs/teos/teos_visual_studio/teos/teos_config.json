@@ -5,7 +5,7 @@
       "logFile":"log.log",
       "format":"[%TimeStamp%]: %Message%"
    },
-   "teos":{
+   "eosc":{
       "server":"localhost",
       "port":"9999"
    }
