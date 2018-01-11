@@ -1,6 +1,7 @@
 buildUbuntu
 buildWindows
 build
+teos_visual_studio1
 **/x64
 **/Debug
 *.ilk

@@ -4,6 +4,7 @@ add_library(${LIB_NAME} STATIC
   teos_command.cpp 
   teos_get_commands.cpp
   teos_wallet_commands.cpp
+  teos_create_commands.cpp
   subcommands.cpp
   ../teos_test.cpp
   ../teos

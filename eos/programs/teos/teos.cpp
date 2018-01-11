@@ -27,6 +27,7 @@
 
 static FILE arr[3];
 extern "C" FILE*  __cdecl __iob_func(void) {
+  throw std::runtime_error("https://msdn.microsoft.com/en-us/library/bb531344.aspx#BK_CRT");
   return arr;
 }
 
@@ -64,7 +65,7 @@ Commands:
 )EOF";
 
 std::map<const std::string, const std::string> subcommandMap = {
-  //{ "create", createSubcommands },
+  { "create", createSubcommands },
   { "get", getSubcommands },
   { "set", setSubcommands },
   { "wallet", walletSubcommands },
