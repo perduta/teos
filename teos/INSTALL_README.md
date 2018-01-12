@@ -6,15 +6,17 @@ We assume that your computer is 64bit.
 
 In its Linux version, TEOS needs `Boost`, `OpenSSL`, `GMP` and `Secp256k1` of the dependencies specified in the EOS documentation. 
 
-However, as TEOS is born to live in Windows, it needs Windows-compiled dependencies. Some of them are easy...
+However, as TEOS is born to live in Windows, it needs Windows-compiled dependencies. Some of them are easy:
 
 * [Boost 1.64](#https://sourceforge.net/projects/boost/files/boost-binaries/), define `BOOST_LIBRARYDIR` (for example, %BOOST_ROOT%/lib64-msvc-14.1) and `BOOST_INCLUDEDIR` (where is boost directory, usualy %BOOST_ROOT%) (We do not want any higher `Boost' version since they are incompatible with the `CMake 3.8`);
 * [OpenSSL](#https://indy.fulgan.com/SSL/openssl-1.0.2l-x64_86-win64.zip), define `OPENSSL_ROOT_DIR` (for example, %C_INCLUDE%/OpenSSL/Win64OpenSSL-1_0_2L);
 * [GMP](#http://fsmath.mathematik.uni-dortmund.de/~mabshoff/?path=gmp-bin/4.2.2/) define `GMP_DIR` (for example, E:/C_INCLUDE/gmp)
 
-... but `Secp256k1` is not available immediately.
+[`MPIR`](#http://www.mpir.org/downloads.html) may be connsidered as a Windows-ready alternative to `GMP`. See also https://stackoverflow.com/questions/47359417/how-to-compile-gmp-for-windows-using-visual-studio.
 
 ## secp256k1 library for Windows
+
+`Secp256k1` is not available immediately.
 
 Now, we cannot offer anything else than a cross-compilation between Linux and Windows. To accomplish this process, you need a Linux environment, the [Windows Subsystem for Linux](https://msdn.microsoft.com/en-us/commandline/wsl/about), for example.
  
@@ -169,3 +171,4 @@ We place the patch, (temporarily, perhaps) in the `main` of the `teos` program.
 All the listed macros are automatically managed with the `CMakeLists` files. Here, they are named for the record sake.
 
 * _CRT_SECURE_NO_WARNINGS
+* -D_WIN32_WINNT=0x0501
