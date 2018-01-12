@@ -214,13 +214,13 @@ Make sure there are no errors, and then proceed with the actual compilation:
 ```
 make
 ```
-As the result of the compilation, you should be able to find those two files in the `build` folder:
+As the result of the compilation, you should be able to find those two files in the `build/programs/teos` folder:
 * `teoslib\libteoslib.a` is a static library acting as an API for EOS
 * `teos` is the CLI executable making use of the above library
 
 #### Testing on remote sever
 
-Open a terminal window, navigate to the `build` folder and run `teos`:
+Open a terminal window, navigate to the `build/programs/teos` folder and run `teos`:
 ```
 ./teos 198.100.148.136:8888 get info
 ```
@@ -233,7 +233,7 @@ The above command will connect to one of our testnet servers. Alternatively, you
 
 If you have complied the entire EOS codebase and have `eosd` running on your local machine, you can also test `teos` locally:
 ```
-./teos localhost get info
+./teos get info
 ```
 
 ## Building on Windows
@@ -262,6 +262,7 @@ git clone https://github.com/tokenika/teos.git
 
 Open the *Power Shell* terminal, navigate to the `teos` folder and then run the following commands:
 ```
+cd (...)teos
 mkdir bulidWindows
 cd buildWindows
 cmake -G "Visual Studio 15 2017 Win64" ..
@@ -273,7 +274,7 @@ msbuild teos.sln
 If there are no errors, switch to the *Debug* folder:
 
 ```
-cd Debug
+cd programs/teos/Debug
 ```
 
 And now you should be able to run `teos` and access `eosd` running on one of our servers:

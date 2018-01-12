@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.8 )
-project( Tokenika_eos )
+project( teos )
 
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 5)
@@ -16,7 +16,7 @@ list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules" )
 message(STATUS "CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
 if( WIN32 )
-  add_definitions( -D_WIN32_WINNT=0x0501 )
+  add_definitions( -D_WIN32_WINNT=0x0501 -D_CRT_SECURE_NO_WARNINGS)
   add_compile_options( /std:c++14 )
 endif( WIN32 )
 

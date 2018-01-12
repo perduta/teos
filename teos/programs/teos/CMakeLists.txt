@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.8)
-project ("Tokenika_teos")
+project ("teos")
 
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 5)
