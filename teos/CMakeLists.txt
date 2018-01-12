@@ -25,6 +25,7 @@ endif( WIN32 )
 set( Boost_USE_STATIC_LIBS ON )
 set( Boost_USE_MULTITHREADED ON )
 set( Boost_USE_STATIC_RUNTIME OFF )
+set( BOOST_ROOT ${HOME}/opt/boost_1_64_0 )
 if( WIN32 )
   set( Boost_NO_SYSTEM_PATHS ON )
   set( BOOST_INCLUDEDIR $ENV{BOOST_INCLUDEDIR})
@@ -32,7 +33,7 @@ if( WIN32 )
   set( BOOST_LIBRARYDIR $ENV{BOOST_LIBRARYDIR} )
   message( STATUS "BOOST_LIBRARYDIR: $ENV{BOOST_LIBRARYDIR}")
 endif( WIN32 )
-find_package(Boost 1.62 REQUIRED COMPONENTS HINTS ${HOME}/opt/boost_1_64_0
+find_package(Boost 1.62 REQUIRED COMPONENTS 
   system
   chrono
   date_time 
