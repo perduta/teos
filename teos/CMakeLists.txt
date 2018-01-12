@@ -32,7 +32,7 @@ if( WIN32 )
   set( BOOST_LIBRARYDIR $ENV{BOOST_LIBRARYDIR} )
   message( STATUS "BOOST_LIBRARYDIR: $ENV{BOOST_LIBRARYDIR}")
 endif( WIN32 )
-find_package(Boost 1.62 REQUIRED COMPONENTS 
+find_package(Boost 1.62 REQUIRED COMPONENTS HINTS ${HOME}/opt/boost_1_64_0
   system
   chrono
   date_time 

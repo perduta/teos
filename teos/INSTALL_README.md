@@ -16,14 +16,19 @@ However, as TEOS is born to live in Windows, it needs Windows-compiled dependenc
 
 ## secp256k1 library for Windows
 
-`Secp256k1` is not available immediately.
+`Secp256k1` is not available immediately. Now, we cannot offer anything else than a cross-compilation between Linux and Windows. To accomplish this process, you need a Linux environment, the [Windows Subsystem for Linux](https://msdn.microsoft.com/en-us/commandline/wsl/about), for example.
 
-Now, we cannot offer anything else than a cross-compilation between Linux and Windows. To accomplish this process, you need a Linux environment, the [Windows Subsystem for Linux](https://msdn.microsoft.com/en-us/commandline/wsl/about), for example.
- 
+```
+export CFLAGS="-v" # let compiler be verbose
+export installDir=/mnt/hgfs/C_INCLUDE/secp256k1/
+export TEMP_DIR = (...) # chose a working directory  
+```
 
 Get a copy of the `secp256k1` repository:
 ```
+cd ${TEMP_DIR}
 git clone https://github.com/cryptonomex/secp256k1-zkp.git
+cd secp256k1-zkp
 ```
 Be sure that you have `MinGW-64bit` installed:
 ```
@@ -31,9 +36,6 @@ sudo apt-get install mingw-w64
 ```
 Build and install `secp256k1` for Windows:
 ```
-export CFLAGS="-v" # let compiler be verbose
-export installDir=/mnt/hgfs/C_INCLUDE/secp256k1/ 
-
 ./autogen.sh
 make clean # if rebuilding
 ./configure --host=x86_64-w64-mingw32 --prefix=${installDir}
@@ -54,6 +56,9 @@ cp /usr/x86_64-w64-mingw32/lib/libadvapi32.a ${installDir}/lib/advapi32.lib
 cp /usr/x86_64-w64-mingw32/lib/libshell32.a ${installDir}/lib/shell32.lib
 cp /usr/x86_64-w64-mingw32/lib/libuser32.a ${installDir}/lib/user32.lib
 cp /usr/x86_64-w64-mingw32/lib/libkernel32.a ${installDir}/lib/kernel32.lib
+```
+```
+rm -rf cd ${TEMP_DIR}/secp256k1-zkp # clean the workshop
 ```
 Finally, define `SECP256K1_DIR` the Windows interpretation of `${installDir}` (for example, E:/C_INCLUDE/secp256k1)
 
