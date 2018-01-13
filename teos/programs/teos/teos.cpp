@@ -24,8 +24,10 @@
 #ifdef _MSC_VER
 static FILE arr[3];
 extern "C" FILE*  __cdecl __iob_func(void) {
-  throw std::runtime_error("See https://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprintf-and-imp-iob-func-sdl2 and https://msdn.microsoft.com/en-us/library/bb531344.aspx#BK_CRT"  );
+  throw std::runtime_error(
+    "See https://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprintf-and-imp-iob-func-sdl2");
   return arr;
+}
 #endif // _MSC_VER
 
 #define IF_ELSE(commandName_, classPrefix)                          \
