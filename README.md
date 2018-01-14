@@ -425,7 +425,7 @@ On Windows the main difficulty is to have all those dependencies as Windows-comp
 
 #### Secp256k1 cross-compilation
 
-`Secp256k1` is not available directly on Windows, so the only way to go is apply cross-compilation between Linux and Windows. For this purpose, you'll need access to a Linux environment. In our view, the easiest option is using [Windows Subsystem for Linux](https://msdn.microsoft.com/en-us/commandline/wsl/about), and the rest of this section is based on this choice.
+[Secp256k1](https://github.com/bitcoin-core/secp256k1) is not available directly on Windows, so the only way to go is apply cross-compilation between Linux and Windows. For this purpose, you'll need access to a Linux environment. In our view, the easiest option is using [Windows Subsystem for Linux](https://msdn.microsoft.com/en-us/commandline/wsl/about), and the rest of this section is based on this choice.
 
 If you haven't already done so, enable *Windows Subsystem for Linux* on your Windows machine, as described in [this guide](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
@@ -480,7 +480,7 @@ export CFLAGS="-v"
 export installDir=/mnt/c/Local/secp256k1/
 ```
 
-Please note that the value of the variable `installDir` needs match the Windows location prepared for your Secp256k1 libraries, as described in the previous section of this guide. So probably you'll need to apply a different path than the one used above, unless you've chosen the same location as we did.
+Please note that the value of the variable `installDir` needs to match the Windows destination for your *Secp256k1* libraries, as described in the previous section. So probably you'll need to apply a different path than the one used above, unless you've chosen the same location as we did.
 
 If you are doing this step not for the first time, you need to reset the workspace (otherwise skip this step):
 
@@ -488,7 +488,7 @@ If you are doing this step not for the first time, you need to reset the workspa
 make clean
 ```
 
-And now you're ready to build and install `secp256k1` in its Windows version:
+And now you're ready to build and install *Secp256k1*:
 
 ```
 ./autogen.sh
