@@ -6,7 +6,7 @@ However, the current EOS codebase is not Windows-ready, i.e. it's impossible to 
 
 To make the above libraries (i.e.`fc`, `types` & `utilities`) compatible with Windows we needed to create clones of those libraries and introduce slight changes. The rest of this document describes the details of those amendments.
 
-In the future we plan to turn these modifications into proper GitHub pull requests against EOS repository, so that those libraries can become platform-independent. But for the time being those amended clones are part of `teos` codebase.
+In the future we plan to turn our modifications into proper GitHub pull requests against EOS repository, so that the above libraries can become platform-independent. However, for the time being they remain part of `teos` codebase.
 
 ---
 
@@ -27,7 +27,7 @@ We've replaced all occurrences of `unsigned __int128` with `boost_uint128`.
 
 ### `boost::asio::io_service` 
 
-We've removed unnecessary redefinitions:
+We've removed unnecessary redefinitions which cause conflicts in Windows:
 
 * In `fc\include\fc\log\appender.hpp`, line 5: 
 ```
