@@ -299,3 +299,44 @@ s\fc\fc.vcxproj]
   'secp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
 fc\fc.vcxproj]
 ```
+
+
+
+## Additional Windows libraries
+
+All the listed dependencies are automatically managed with the `CMakeLists` files. Here, they are named for the record sake.
+
+`OpenSSL` needs `$(WindowsSDK_LibraryPath)\x64\crypt32.lib`.
+
+`OpenSSL`, `secp256k1` and `GMP` compilations that we use are incompatible with the Visual Studio 2017, hence, they needed to be patched with additional libraries.
+
+```
+$(C_INCLUDE)\secp256k1\lib\gcc.lib # that is /usr/lib/gcc/x86_64-linux-gnu/7/libgcc.a, it fixes unresolved ___chkstk_ms error
+$(C_INCLUDE)\\lib\msvcrt.lib # unresolved  __iob_func error
+$(MS_BUILD)\..\..\..\..\VC\Tools\MSVC\14.12.25827\lib\x64\legacy_stdio_definitions.lib # unresolved imp_fprintf error
+$(WindowsSDK_LibraryPath)\x64\crypt32.lib # unresolved __imp_CertOpenStore error
+Userenv.lib # unresolved GetUserProfileDirectoryW error
+```
+
+### unresolved external symbol __imp___iob_func
+
+The problem is explained [there](#https://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprintf-and-imp-iob-func-sdl2).
+
+An not ideal solution, one adequate to our purpose yet, is defining a dummy `__imp___iob_func` (any functional definition is impossible, rather):
+
+```
+static FILE arr[3];
+extern "C" FILE*  __cdecl __iob_func(void) {
+  throw std::runtime_error("See https://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprintf-and-imp-iob-func-sdl2 and https://msdn.microsoft.com/en-us/library/bb531344.aspx#BK_CRT"  );
+  return arr;
+}
+```
+
+We place the patch, (temporarily, perhaps) in the `main` of the `teos` program.
+
+## Visual Studio precompiler macros
+
+All the listed macros are automatically managed with the `CMakeLists` files. Here, they are named for the record sake.
+
+- _CRT_SECURE_NO_WARNINGS
+- -D_WIN32_WINNT=0x0501

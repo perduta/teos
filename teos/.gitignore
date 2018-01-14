@@ -1,5 +1,3 @@
-buildUbuntu
-buildWindows
 build
 install
 **/x64

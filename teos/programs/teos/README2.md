@@ -16,13 +16,15 @@ Here are the benefits of using `teos` instead of `eosc`:
 
 * With `teos` you can do everything available in `eosc` and much more, as we've added a richer & more useful command option list.
 * Also, as `teos` is not dependent on the entire EOS codebase, it can be easily compiled on any platform, including Windows, which is not the case with `eosc`.
-* And last but not least, `teos` has an underlying library which offers a proper API which you can use to interact programmatically with EOS full node, `eosd`. 
+* And last but not least, `teos` has an underlying library which offers a proper API which you can use to interact programmatically with `eosd` (EOS full node).
 
 For obvious reasons everything we do is open source. The source code of `teos` is located in [this repository](https://github.com/tokenika/eosc).
 
+Note: to make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. You'll find more details about it in [this document](https://github.com/tokenika/teos/blob/master/teos/EOS_LIBS_AMENDMENTS.md).
+
 ## Comparison
 
-As we've mentioned before, `teos` covers the same functionality as `eosc`, but it's more user friendly and offers a wider selection of options.
+As it was mentioned above, `teos` covers the same functionality as `eosc`, but it's more user friendly and offers a wider selection of options.
 
 Let's compare the `get block` command options and the response `eosc` gives:
 ```
@@ -170,6 +172,105 @@ printout:
 */
 ```
 
+## Using `teos` as EOS API
+
+In our view, the real value of our efforts is actually the library that's behind `teos`. As we mentioned before, the `teosLib` library acts as a full-blown API for EOS.
+
+Let's consider a code snippet illustrating its usage:
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <string>
+
+#include "teosLib/teos_get_commands.hpp"
+
+int main(int argc, char *argv[])
+{
+  using namespace tokenika::teos;
+
+  TeosCommand::host = "198.100.148.136";
+  TeosCommand::port = "8888";
+
+  ptree getInfoJson;
+
+  // Invoke 'GetInfo' command:
+  GetInfo getInfo(getInfoJson);
+  cout << getInfo.toStringRcv() << endl;
+
+  if (getInfo.isError()) {
+    return -1;
+  }
+
+  ptree getBlockJson;
+
+  // Use reference to the last block:
+  getBlockJson.put("block_num_or_id",
+    getInfo.get<int>("last_irreversible_block_num"));
+  GetBlock getBlock(getBlockJson);
+  cout << getBlock.toStringRcv() << endl;
+
+  if (getBlock.isError()) {
+    return -1;
+  }
+
+  return 0;
+}
+
+```
+
+Here is the outcome of the above code:
+
+```
+{
+    "server_version": "9703495c",
+    "head_block_num": "1707240",
+    "last_irreversible_block_num": "1707225",
+    "head_block_id": "001a0ce87ca6e2d0fc19b8a02e9241c658bea0365f4e6f035ce6602db04611bd",
+    "head_block_time": "2017-12-25T14:11:31",
+    "head_block_producer": "inito",
+    "recent_slots": "1111111111111111111111111111111111111111111111111111111111111111",
+    "participation_rate": "1.00000000000000000"
+}
+
+{
+    "previous": "001a0cd8422216f2828ef5056e9371439f80665cee99d72a5f3162ae7c0495fd",
+    "timestamp": "2017-12-25T14:11:16",
+    "transaction_merkle_root": "0000000000000000000000000000000000000000000000000000000000000000",
+    "producer": "initn",
+    "producer_changes": "",
+    "producer_signature": "1f382b4fe716f683c8a7ebd15fe5f5266c75a24f75b9b212fc3cc3f7db11f5258b08e5aebc7680784c240e0f8d0ea7540dfb4ab8dcbe5cd8b492876e8f59bb4ea8",
+    "cycles": "",
+    "id": "001a0cd98eb6f7e0f8e7803b098082b35f1348672561af193ead3d1b1a281bcf",
+    "block_num": "1707225",
+    "ref_block_prefix": "998303736"
+}
+
+```
+
+## List of currently supported commands
+
+At this very initial stage of our project, we haven't ported all the commands available in `eosc`. Below is the list of commands `teos` supports in this release:
+
+```
+version client
+get info
+get block
+get account
+get code
+get table
+wallet create
+wallet list
+wallet keys
+wallet import
+wallet open
+wallet lock
+wallet lock all
+wallet unlock
+create key
+```
+
 ## Building on Ubuntu
 
 #### Dependencies
@@ -213,7 +314,7 @@ cmake --version
 
 #### Cloning the source code
 
-Navigate to a location of your choice on your machine and clone our *teos* repository:
+Navigate to a location of your choice on your machine and clone *teos* repository:
 
 ```
 git clone https://github.com/tokenika/teos.git
@@ -236,23 +337,56 @@ Make sure there are no errors, and then proceed with the actual compilation:
 make install
 ```
 As the result of the compilation, you should be able to find those two files in the `install` folder:
-* `libteoslib.a` is a static library acting as an API for EOS
-* `teos` is the CLI executable making use of the above library
+* `lib/libteoslib.a` is a static library acting as an API for EOS
+* `bin/teos` is the CLI executable making use of the above library
 
 #### Testing on remote sever
 
-Open a terminal window, navigate to the `build/programs/teos` folder and run `teos`:
+Open a terminal window, navigate to the `install/bin` folder and run `teos`:
 ```
 ./teos 198.100.148.136:8888 get info
 ```
-The above command will connect to one of our testnet servers. Alternatively, you can use the predefined placeholder `tokenika` instead of  `198.100.148.136:8888`:
+The above command will connect to EOS full node running on one of our testnet servers.
+
+Alternatively, you can use the predefined placeholder `tokenika` instead of  `198.100.148.136:8888`:
+
 ```
 ./teos tokenika get info
+```
+
+You can try simple queries, e.g.
+
+```
+./teos tokenika get block 25
+```
+
+```
+##         block number: 25
+##            timestamp: 2017-12-05T19:55:56
+##     ref block prefix: 1139663381
+```
+
+Or you can test private key generation:
+
+```
+./teos tokenika create key
+```
+
+```
+##             key name: default
+##          private key: 5JyL28JPQbPTYwTpjKRcXvfj6nwUKgCmHnJaD28nmmWMpHXukVn
+##           public key: EOS7TxBhoCwAWXoV8uhtgjz4inTLwiwcySvrVhGNYcjhw75wFJ9uA
 ```
 
 #### Testing on localhost
 
 If you have complied the entire EOS codebase and have `eosd` running on your local machine, you can also test `teos` locally:
+```
+./teos localhost get info
+```
+
+Or just:
+
 ```
 ./teos get info
 ```
@@ -263,7 +397,9 @@ If you have complied the entire EOS codebase and have `eosd` running on your loc
 
 We assume that your computer is 64bit.
 
-We also assume that you have [CMake 3.10.1](https://cmake.org/download/) and [MS Visual Studio 2017](https://www.visualstudio.com/downloads/) installed. If not, please follow instructions available in the the above links. As far as Visual Studio is concerned, you will only need the most basic module called *Universal Windows Platform Development* (and from optional tools *C++ Universal Windows Platform Tools*).
+We also assume that you have [Git 2.15.1](https://git-scm.com/downloads), [CMake 3.10.1](https://cmake.org/download/) and [MS Visual Studio 2017](https://www.visualstudio.com/downloads/) installed. If not, please follow instructions available in the the above links.
+
+As far as Visual Studio is concerned, you will only need the most basic module called *Universal Windows Platform Development* (and from optional tools *C++ Universal Windows Platform Tools*).
 
 #### Dependencies
 
@@ -271,16 +407,16 @@ For most of its functionality `teos` is only dependent on [Boost](http://www.boo
 
 On Windows the main difficulty is to have all those dependencies as Windows-compiled libraries. Advanced Windows users might want to build everything from source files (it's certainly doable) and ultimately we will aim for that. However, at this stage we recommend using pre-compiled binaries:
 
-- Boost version 1.64 (not higher as it might be incompatible with `cmake`)
+- Boost version 1.64 (not higher as it might be incompatible with CMake)
   - Windows binaries are available [here](https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0/) (for a 64bit machine select `boost_1_64_0-msvc-14.1-64.exe`).
-  - Define environment variable `BOOST_LIBRARYDIR` (e.g. `C:\Local\boost_1_64_0\lib64-msvc-14.1`) and `BOOST_INCLUDEDIR` (e.g. `C:\Local\boost_1_64_0`) pointing to the location you've chosen to store the Boost libraries.
+  - Define an environment variable `BOOST_INCLUDEDIR` pointing to the location you've chosen to store the Boost libraries (e.g. `C:\Local\boost_1_64_0`).
+  - Define an environment variable `BOOST_LIBRARYDIR` pointing to the `lib64-msvc-14.1` folder inside the location you've chosen to store the Boost libraries (e.g. `C:\Local\boost_1_64_0\lib64-msvc-14.1`).
 - OpenSLL version 1.1.0
   - Windows binaries are available [here](https://slproweb.com/products/Win32OpenSSL.html) (for a 64bit machine select `Win64OpenSSL-1_1_0g.exe`).
   - Run the installer and when prompted choose to copy the DLLs to the `bin` directory.
   - Define an environment variable `OPENSSL_ROOT_DIR` pointing to the location you've chosen to store the OpenSLL libraries (e.g. `C:\Local\OpenSSL-Win64`).
 - GMP version 4.1 (Please note that [MPIR](http://www.mpir.org/downloads.html) may be considered as a good Windows-ready alternative to  [GMP](https://gmplib.org/), as described [here](https://stackoverflow.com/questions/47359417/how-to-compile-gmp-for-windows-using-visual-studio.). In a future release of `teos` we will probably switch to MPIR, as it seems to be better suited for Windows).
   - Window binaries are available [here](https://cs.nyu.edu/~exact/core/gmp/index.html) (choose static ones for MinGW, i.e. `gmp-static-mingw-4.1.tar.gz`). You might need [7-Zip](http://www.7-zip.org/) to extract them.
-  - Navigate to the `lib` folder and rename `libgmp.a` to `gmp.lib`.
   - Define an environment variable `GMP_DIR` pointing to the location you've chosen to store the GMP libraries (e.g. `C:\Local\gmp-static-mingw-4.1`).
 - Secp256k1 - as there are no pre-compiled binaries available what you'll need to do is cross-compilation between Linux and Windows. This will be described in the next section. But first do these simple steps:
   - Create a location of your choice where Secp256k1 libraries will be stored. In our case it's `c:\Local\secp256k1`.
@@ -293,7 +429,7 @@ On Windows the main difficulty is to have all those dependencies as Windows-comp
 
 If you haven't already done so, enable *Windows Subsystem for Linux* on your Windows machine, as described in [this guide](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-While on Windows, run Ubuntu bash and make sure you are running Ubuntu 16.04:
+While on Windows, run Ubuntu bash and start with making sure you are running Ubuntu 16.04:
 
 ```
 lsb_release -a
@@ -318,18 +454,16 @@ Make sure that you have `autoconf` installed:
 sudo apt-get install autoconf
 ```
 
+Make sure that you have `make` installed: 
+
+```
+sudo apt-get install make
+```
+
 Make sure that you have `libtool` installed: 
 
 ```
 sudo apt-get install libtool
-```
-
-Make a temporary directory, e.g. `temp` and navigate to it:
-
-```
-mkdir temp
-cd temp
-export tempDir=$(pwd)
 ```
 
 Get a copy of the `secp256k1` repository:
@@ -346,7 +480,7 @@ export CFLAGS="-v"
 export installDir=/mnt/c/Local/secp256k1/
 ```
 
-Please note that the variable `installDir` needs match the Windows location for your Secp256k1 libraries you created in the previous section of this guide. So probably you'll need to apply a different path than the one used above, unless you've chosen the same location as we did.
+Please note that the value of the variable `installDir` needs match the Windows location prepared for your Secp256k1 libraries, as described in the previous section of this guide. So probably you'll need to apply a different path than the one used above, unless you've chosen the same location as we did.
 
 If you are doing this step not for the first time, you need to reset the workspace (otherwise skip this step):
 
@@ -369,38 +503,26 @@ For convenience let's rename the `libsecp256k1` file to match Windows convention
 mv ${installDir}/lib/libsecp256k1.a ${installDir}/lib/secp256k1.lib
 ```
 
-Copy the outcome of the build process to `installDir`:
+Copy the library `libgcc` which comes as part of *Mingw*:
 
 ```
-cp /usr/x86_64-w64-mingw32/lib/libmingw32.a ${installDir}/lib/mingw32.lib
-cp /usr/lib/gcc/x86_64-linux-gnu/5/libgcc.a ${installDir}/lib/gcc.lib
-cp /usr/lib/gcc/x86_64-w64-mingw32/5.3-win32/libgcc_eh.a ${installDir}/lib/gcc_eh.lib
-cp /usr/x86_64-w64-mingw32/lib/libmoldname.a ${installDir}/lib/moldname.lib
-cp /usr/x86_64-w64-mingw32/lib/libmingwex.a ${installDir}/lib/mingwex.lib
-cp /usr/x86_64-w64-mingw32/lib/libmsvcrt.a ${installDir}/lib/msvcrt.lib
-cp /usr/x86_64-w64-mingw32/lib/libadvapi32.a ${installDir}/lib/advapi32.lib
-cp /usr/x86_64-w64-mingw32/lib/libshell32.a ${installDir}/lib/shell32.lib
-cp /usr/x86_64-w64-mingw32/lib/libuser32.a ${installDir}/lib/user32.lib
-cp /usr/x86_64-w64-mingw32/lib/libkernel32.a ${installDir}/lib/kernel32.lib
+cp /usr/lib/gcc/x86_64-linux-gnu/7/libgcc.a ${installDir}/lib/gcc.lib
 ```
 
-Note: if any of the above commands give you errors, you might need to modify the source paths to match your specific settings. For example ` /usr/lib/gcc/x86_64-linux-gnu/5/` might need to be replaced with something like ` /usr/lib/gcc/x86_64-linux-gnu/7/`.
-
-Finally, copy the executable needed for testing:
+And finally, copy the executable `tests` which will be used for testing:
 
 ```
 cp tests.exe ${installDir}/tests.exe
 ```
 
-Clean the workspace:
+Before you exit Ubuntu bash, you might want to clean the workspace:
 
 ```
-rm -rf cd ${tempDir}/secp256k1-zkp
+cd ..
+rm -rf secp256k1-zkp
 ```
 
-And you can exit Linux bash at this moment. 
-
-Open *PowerShell*, navigate to `SECP256K1_DIR` (in our case it's `C:\Local\secp256k1`) and run `test.exe` to make sure there are no errors:
+Open *PowerShell*, navigate to `SECP256K1_DIR` (in our case it's `C:\Local\secp256k1`) and run `tests.exe` to make sure there are no errors:
 
 ```
 cd C:\Local\secp256k1
@@ -409,7 +531,7 @@ cd C:\Local\secp256k1
 
 #### Cloning the source code
 
-Navigate to a location of your choice on your machine and clone our *teos* repository:
+Open *Visual Studio 2017 Developer Command Prompt*, navigate to a location of your choice and clone *teos* repository:
 
 ```
 git clone https://github.com/tokenika/teos.git
@@ -417,30 +539,25 @@ git clone https://github.com/tokenika/teos.git
 
 #### Compilation
 
-Open *Power Shell*, navigate to the `teos/teos` folder and run the following commands:
+Still using *Visual Studio 2017 Developer Command Prompt*, navigate to the `teos\teos` folder and run the following commands:
 ```
-cd teos/teos
+cd teos\teos
 mkdir bulid
 cd build
 cmake -G "Visual Studio 15 2017 Win64" ..
-```
-
-Open *Visual Studio 2017 Developer Command Prompt* and run the following commands:
-
-```
 msbuild teos.sln
 msbuild INSTALL.vcxproj
 ```
 
 #### Testing on remote sever
 
-If there are no errors, go back to *Power Shell* and navigate to the `Debug` folder:
+Open *Power Shell* and navigate to the location of your *teos* repository, and then inside the repository navigate to the `teos\install\bin` folder:
 
 ```
-cd programs/teos/Debug
+cd teos\install\bin
 ```
 
-And now you should be able to run `teos` and access `eosd` running on one of our servers:
+And now you should be able to run `teos` and access EOS full node running on one of our servers:
 
 ```
 ./teos 198.100.148.136:8888 get info
@@ -451,102 +568,27 @@ Alternatively, you can use the predefined placeholder `tokenika` instead of  `19
 ```
 ./teos tokenika get info
 ```
+You can try simple queries, e.g.
+
 ```
-Debug/teos.exe tokenika get block 25
+./teos tokenika get block 25
+```
+
+```
 ##         block number: 25
 ##            timestamp: 2017-12-05T19:55:56
 ##     ref block prefix: 1139663381
-Debug/teos tokenika create key
+```
+Or you can test private key generation:
+
+```
+./teos tokenika create key
+```
+
+```
 ##             key name: default
 ##          private key: 5JyL28JPQbPTYwTpjKRcXvfj6nwUKgCmHnJaD28nmmWMpHXukVn
 ##           public key: EOS7TxBhoCwAWXoV8uhtgjz4inTLwiwcySvrVhGNYcjhw75wFJ9uA
-```
-
-#### Working with MS Visual Studio
-
-If you want, you can play with `teos` source code using [MS Visual Studio 2017](https://www.visualstudio.com/). The *Community* edition is fully functional and is [available for free](https://www.visualstudio.com/).
-
-We've created a dedicated MS Visual Studio solution project - it's located in the  `teos_visual_studio` folder. Open the `teos.sln` file in MS Visual Studio 2017, and then build those two projects:
-
-* `teosLib` (the library acting as EOS API)
-* `teos` (the executable dependent on `teosLib`).
-
-Once both projects are successfully built, open *Power Shell*, navigate to the `teos_visual_studio` folder and then run the `teos` CLI:
-
-```
-./teos tokenika get info
-```
-
-## The library role
-
-In our view, the real value of our efforts is actually the library that's behind `teos`. As we mentioned before, the `teosLib` library acts as a full-blown API for EOS.
-
-Let's consider a code snippet illustrating its usage:
-```
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <string>
-
-#include "teosLib/teos_get_commands.hpp"
-
-int main(int argc, char *argv[])
-{
-  using namespace tokenika::teos;
-
-  TeosCommand::host = "198.100.148.136";
-  TeosCommand::port = "8888";
-
-  ptree getInfoJson;
-
-  // Invoke 'GetInfo' command:
-  GetInfo getInfo(getInfoJson);
-  cout << getInfo.toStringRcv() << endl;
-
-  if (getInfo.isError()) {
-    return -1;
-  }
-
-  ptree getBlockJson;
-
-  // Use reference to the last block:
-  getBlockJson.put("block_num_or_id",
-    getInfo.get<int>("last_irreversible_block_num"));
-  GetBlock getBlock(getBlockJson);
-  cout << getBlock.toStringRcv() << endl;
-
-  if (getBlock.isError()) {
-    return -1;
-  }
-
-  return 0;
-}
-```
-Here is the outcome of the above code:
-```
-{
-    "server_version": "9703495c",
-    "head_block_num": "1707240",
-    "last_irreversible_block_num": "1707225",
-    "head_block_id": "001a0ce87ca6e2d0fc19b8a02e9241c658bea0365f4e6f035ce6602db04611bd",
-    "head_block_time": "2017-12-25T14:11:31",
-    "head_block_producer": "inito",
-    "recent_slots": "1111111111111111111111111111111111111111111111111111111111111111",
-    "participation_rate": "1.00000000000000000"
-}
-
-{
-    "previous": "001a0cd8422216f2828ef5056e9371439f80665cee99d72a5f3162ae7c0495fd",
-    "timestamp": "2017-12-25T14:11:16",
-    "transaction_merkle_root": "0000000000000000000000000000000000000000000000000000000000000000",
-    "producer": "initn",
-    "producer_changes": "",
-    "producer_signature": "1f382b4fe716f683c8a7ebd15fe5f5266c75a24f75b9b212fc3cc3f7db11f5258b08e5aebc7680784c240e0f8d0ea7540dfb4ab8dcbe5cd8b492876e8f59bb4ea8",
-    "cycles": "",
-    "id": "001a0cd98eb6f7e0f8e7803b098082b35f1348672561af193ead3d1b1a281bcf",
-    "block_num": "1707225",
-    "ref_block_prefix": "998303736"
-}
 ```
 
 ## Conclusion
