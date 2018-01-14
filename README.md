@@ -466,16 +466,16 @@ Make sure that you have `libtool` installed:
 sudo apt-get install libtool
 ```
 
-Get a copy of the `secp256k1` repository:
+Get a copy of the `secp256k1` repository and navigate to its folder:
 
 ```
 git clone https://github.com/cryptonomex/secp256k1-zkp.git
-```
-
-Build and install `secp256k1` for Windows:
-
-```
 cd secp256k1-zkp
+```
+
+Define those two variables:
+
+```
 export CFLAGS="-v"
 export installDir=/mnt/c/Local/secp256k1/
 ```
