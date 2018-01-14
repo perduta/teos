@@ -440,27 +440,12 @@ sudo apt update
 sudo apt full-upgrade
 ```
 
-Make sure that you have `MinGW-64bit` installed:
+Make sure that you have these tools installed:
 
 ```
 sudo apt-get install mingw-w64
-```
-
-Make sure that you have `autoconf` installed: 
-
-```
 sudo apt-get install autoconf
-```
-
-Make sure that you have `make` installed: 
-
-```
 sudo apt-get install make
-```
-
-Make sure that you have `libtool` installed: 
-
-```
 sudo apt-get install libtool
 ```
 
@@ -589,4 +574,4 @@ Or you can test private key generation:
 
 ## Conclusion
 
-We dare to hope that this little work of ours could become an interesting alternative to the original `eosc` CLI, and maybe one day be included as part of EOS codebase.
+We dare to hope that this little work of ours could become an interesting alternative to the original `eosc` CLI, and maybe one day be included as part of EOS codebase. To our knowledge this is the first fully cross-platform EOS client, and also a good foundation for an EOS API.
