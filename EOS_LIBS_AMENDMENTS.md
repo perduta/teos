@@ -4,9 +4,9 @@ In order to be able to manage things like private key generation, `teos` is depe
 
 However, the current EOS codebase is not Windows-ready, i.e. it's impossible to compile it in Windows.
 
-To make the above libraries (i.e.`fc`, `types` & `utilities`) compatible with Windows we needed to create clones of those libraries and introduce slight changes. The rest of this document describes the details of those amendments.
+To make the above libraries (i.e. `fc`, `types` & `utilities`) compatible with Windows, we needed to create clones of those libraries and introduce slight changes. The rest of this document describes the details of those amendments.
 
-In the future we plan to turn our modifications into proper GitHub pull requests against EOS repository, so that the above libraries can become platform-independent. However, for the time being they remain part of `teos` codebase.
+In the future we plan to turn our modifications into proper GitHub pull requests against EOS repository, so that the above libraries can become platform-independent. However, for the time being their clones remain part of `teos` codebase.
 
 ---
 
