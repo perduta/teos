@@ -25,3 +25,277 @@ elliptic_common.cpp:(.text+0x42f8): undefined reference to `fc::ecc::extended_pr
 libraries/fc/libfc.a(elliptic_common.cpp.o): In function `fc::ecc::extended_private_key::generate_master(char const*, unsigned int)':
 elliptic_common.cpp:(.text+0x4556): undefined reference to `fc::ecc::extended_private_key::extended_private_key(fc::ecc::private_key const&, fc::sha256 const&, int, int, unsigned char)'
 ```
+
+## secp256k1 library for Windows - erratum
+
+In fact, there is available a better Windows source of the `secp256k1` library.
+
+Define `SECP256K1_DIR` (for example, E:/C_INCLUDE/secp256k1).
+Use Windows `powershell`:
+```
+git clone https://github.com/evoskuil/secp256k1/
+cd ./secp256k1/builds/msvc/vs217/
+msbuild secp256k1.sln /property:Configuration=StaticRelease /property:Platform=x64
+mkdir $Env:SECP256K1_DIR/include
+$Env:SECP256K1_DIR/lib/secp256k1.lib
+cp ../../../include/* $Env:SECP256K1_DIR/include/
+mkdir $Env:SECP256K1_DIR/lib
+cp ../../../bin/x64/Release/v141/static/secp256k1.lib 
+```
+However, the `EOS` libraries are not ready for this improvement now, we will tune them later on. It follows a list of compile errors:
+
+```
+"E:\Workspaces\EOS\Pentagon\teos\buildWindows\teos.sln" (default target) (1) ->
+"E:\Workspaces\EOS\Pentagon\teos\buildWindows\ALL_BUILD.vcxproj.metaproj" (default target) (2) ->
+"E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\types\eos_types.vcxproj.metaproj" (default targ
+et) (4) ->
+"E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\utilities\eos_utilities.vcxproj.metaproj" (defa
+ult target) (5) ->
+"E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj.metaproj" (default target) (6) ->
+"E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj" (default target) (7) ->
+(ClCompile target) ->
+  e:\workspaces\eos\pentagon\teos\libraries\fc\src\crypto\_elliptic_impl_priv.hpp(11): error C4430: mis
+sing type specifier - int assumed. Note: C++ does not support default-int [E:\Workspaces\EOS\Pentagon\t
+eos\buildWindows\libraries\fc\fc.vcxproj]
+  e:\workspaces\eos\pentagon\teos\libraries\fc\src\crypto\_elliptic_impl_priv.hpp(11): error C2143: syn
+tax error: missing ';' before '*' [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj
+]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_impl_priv.cpp(75): error C2660: 'sec
+p256k1_ec_pubkey_create': function does not take 5 arguments [E:\Workspaces\EOS\Pentagon\teos\buildWind
+ows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_impl_priv.cpp(85): error C2198: 'con
+st secp256k1_nonce_function': too few arguments for call [E:\Workspaces\EOS\Pentagon\teos\buildWindows\
+libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_impl_priv.cpp(96): error C3861: 'sec
+p256k1_ecdsa_sign_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  e:\workspaces\eos\pentagon\teos\libraries\fc\src\crypto\_elliptic_impl_priv.hpp(11): error C4430: mis
+sing type specifier - int assumed. Note: C++ does not support default-int [E:\Workspaces\EOS\Pentagon\t
+eos\buildWindows\libraries\fc\fc.vcxproj]
+  e:\workspaces\eos\pentagon\teos\libraries\fc\src\crypto\_elliptic_impl_priv.hpp(11): error C2143: syn
+tax error: missing ';' before '*' [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj
+]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(26): error C4430: missnst secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(442): error C3861: 'se
+cp256k1_ecdsa_recover_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(461): error C3861: 'se
+cp256k1_pedersen_commit': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(470): error C3861: 'se
+cp256k1_pedersen_blind_sum': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librari
+es\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(482): error C3861: 'se
+cp256k1_pedersen_verify_tally': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(487): error C3861: 'se
+cp256k1_rangeproof_verify': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]nst secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(442): error C3861: 'se
+cp256k1_ecdsa_recover_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(461): error C3861: 'se
+cp256k1_pedersen_commit': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(470): error C3861: 'se
+cp256k1_pedersen_blind_sum': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librari
+es\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(482): error C3861: 'se
+cp256k1_pedersen_verify_tally': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(487): error C3861: 'se
+cp256k1_rangeproof_verify': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(502): error C3861: 'se
+cp256k1_rangeproof_sign': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(525): error C3861: 'se
+cp256k1_rangeproof_rewind': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(544): error C3861: 'se
+cp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(502): error C3861: 'se
+cp256k1_rangeproof_sign': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(525): error C3861: 'senst secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(442): error C3861: 'se
+cp256k1_ecdsa_recover_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(461): error C3861: 'se
+cp256k1_pedersen_commit': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(470): error C3861: 'se
+cp256k1_pedersen_blind_sum': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librari
+es\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(482): error C3861: 'se
+cp256k1_pedersen_verify_tally': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(487): error C3861: 'se
+cp256k1_rangeproof_verify': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(502): error C3861: 'se
+cp256k1_rangeproof_sign': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(525): error C3861: 'se
+cp256k1_rangeproof_rewind': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(544): error C3861: 'se
+cp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+cp256k1_rangeproof_rewind': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(544): error C3861: 'se
+cp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+ing type specifier - int assumed. Note: C++ does not support default-int [E:\Workspaces\EOS\Pentagon\te
+os\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(26): error C2143: synt
+ax error: missing ';' before '*' [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(26): error C2086: 'con
+st int fc::ecc::detail::secp256k1_context_t': redefinition [E:\Workspaces\EOS\Pentagon\teos\buildWindow
+s\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(26): error C2059: synt
+ax error: '{' [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(26): error C2143: synt
+ax error: missing ';' before '{' [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(26): error C2447: '{':
+ missing function header (old-style formal list?) [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librari
+es\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(32): error C4430: missnst secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(442): error C3861: 'se
+cp256k1_ecdsa_recover_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(461): error C3861: 'se
+cp256k1_pedersen_commit': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(470): error C3861: 'se
+cp256k1_pedersen_blind_sum': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librari
+es\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(482): error C3861: 'se
+cp256k1_pedersen_verify_tally': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(487): error C3861: 'se
+cp256k1_rangeproof_verify': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(502): error C3861: 'se
+cp256k1_rangeproof_sign': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(525): error C3861: 'se
+cp256k1_rangeproof_rewind': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(544): error C3861: 'se
+cp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+ing type specifier - int assumed. Note: C++ does not support default-int [E:\Workspaces\EOS\Pentagon\te
+os\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(32): error C2143: synt
+ax error: missing ';' before '*' [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(32): error C2065: 'ctx
+': undeclared identifier [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(34): error C2065: 'ctx
+': undeclared identifier [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(72): error C2660: 'sec
+p256k1_ec_pubkey_tweak_mul': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\buildW
+indows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(107): error C2660: 'se
+cp256k1_ec_pubkey_tweak_add': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\build
+Windows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(129): error C3861: 'se
+cp256k1_ec_pubkey_decompress': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libra
+ries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(167): error C3861: 'se
+cp256k1_ecdsa_recover_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(183): error C2660: 'se
+cp256k1_ec_pubkey_tweak_add': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\build
+Windows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(299): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(302): error C2660: 'se
+cp256k1_ec_pubkey_tweak_mul': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\build
+Windows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(313): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(317): error C2660: 'se
+cp256k1_ec_pubkey_tweak_mul': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\build
+Windows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(329): error C2660: 'se
+cp256k1_ec_pubkey_tweak_add': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\build
+Windows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(335): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(340): error C2660: 'se
+cp256k1_ec_pubkey_tweak_mul': function does not take 4 arguments [E:\Workspaces\EOS\Pentagon\teos\build
+Windows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(356): error C2664: 'in
+t secp256k1_ec_privkey_tweak_add(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(383): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(384): error C2664: 'in
+t secp256k1_ec_privkey_tweak_add(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(401): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(410): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(411): error C2664: 'in
+t secp256k1_ec_privkey_tweak_add(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(430): error C2664: 'in
+t secp256k1_ec_privkey_tweak_mul(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(431): error C2664: 'in
+t secp256k1_ec_privkey_tweak_add(const secp256k1_context *,unsigned char *,const unsigned char *)': can
+not convert argument 1 from 'int *' to 'const secp256k1_context *' [E:\Workspaces\EOS\Pentagon\teos\bui
+ldWindows\libraries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(442): error C3861: 'se
+cp256k1_ecdsa_recover_compact': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(461): error C3861: 
+  'secp256k1_pedersen_commit': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(470): error C3861: 'se
+cp256k1_pedersen_blind_sum': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librari
+es\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(482): error C3861: 'se
+cp256k1_pedersen_verify_tally': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libr
+aries\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(487): error C3861: 'se
+cp256k1_rangeproof_verify': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(502): error C3861: 'se
+cp256k1_rangeproof_sign': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(525): error C3861: 
+  'secp256k1_rangeproof_rewind': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\librarie
+s\fc\fc.vcxproj]
+  E:\Workspaces\EOS\Pentagon\teos\libraries\fc\src\crypto\elliptic_secp256k1.cpp(544): error C3861: 
+  'secp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
+fc\fc.vcxproj]
+```

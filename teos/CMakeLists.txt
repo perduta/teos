@@ -25,7 +25,7 @@ endif( WIN32 )
 set( Boost_USE_STATIC_LIBS ON )
 set( Boost_USE_MULTITHREADED ON )
 set( Boost_USE_STATIC_RUNTIME OFF )
-set( BOOST_ROOT ${HOME}/opt/boost_1_64_0 )
+set( BOOST_ROOT $ENV{HOME}/opt/boost_1_64_0 )
 if( WIN32 )
   set( Boost_NO_SYSTEM_PATHS ON )
   set( BOOST_INCLUDEDIR $ENV{BOOST_INCLUDEDIR})
@@ -45,13 +45,11 @@ find_package(Boost 1.62 REQUIRED COMPONENTS
 if( Boost_FOUND )
   message( STATUS "Boost found.
   Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}
-  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}
-  ")
+  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}" )
 else( Boost_FOUND )
   message ( STATUS "Boost not found. set environment variables:
   BOOST_LIBRARYDIR (for example, %BOOST_ROOT%/lib64-msvc-14.1)
-  BOOST_INCLUDEDIR (where is boost directory, usualy %BOOST_ROOT%)
-  " )
+  BOOST_INCLUDEDIR (where is boost directory, usualy %BOOST_ROOT%)" )
 endif( Boost_FOUND )
 
 set( OPENSSL_USE_STATIC_LIBS TRUE)
@@ -59,12 +57,10 @@ find_package( OpenSSL REQUIRED )
 if( OpenSSL_FOUND )
   message( STATUS "OpenSSL found.
   OPENSSL_INCLUDE_DIR: ${OPENSSL_INCLUDE_DIR}
-  OPENSSL_LIBRARIES: ${OPENSSL_LIBRARIES}  
-  " )
+  OPENSSL_LIBRARIES: ${OPENSSL_LIBRARIES}" )
 else( OpenSSL_FOUND)
   message( STATUS "OpenSSL not found. set environment variables:
-  OPENSSL_ROOT_DIR (for example, %C_INCLUDE%/OpenSSL/Win64OpenSSL-1_0_2L)
-  " )
+  OPENSSL_ROOT_DIR (for example, %C_INCLUDE%/OpenSSL/Win64OpenSSL-1_0_2L)" )
 endif( OpenSSL_FOUND )
 
 if( NOT EOS_ECC_IMPL STREQUAL openssl )
@@ -76,20 +72,17 @@ if( NOT EOS_ECC_IMPL STREQUAL openssl )
     " )
   else( GMP_FOUND )
     message( STATUS "gmp not found. set environment variables:
-    GMP_DIR (for example, E:/C_INCLUDE/gmp)
-    ")
+    GMP_DIR (for example, E:/C_INCLUDE/gmp)" )
   endif( GMP_FOUND )
 
   find_package(Secp256k1 REQUIRED)
   if( SECP256K1_FOUND )
     message( STATUS "Secp256k1 found.
     SECP256K1_INCLUDE_DIR: ${SECP256K1_INCLUDE_DIR}
-    SECP256K1_LIBRARIES: ${SECP256K1_LIBRARIES}
-    " )
+    SECP256K1_LIBRARIES: ${SECP256K1_LIBRARIES}" )
   else( SECP256K1_FOUND )
     message( STATUS "Secp256k1 not found. set environment variables:
-    SECP256K1_DIR (for example, E:/C_INCLUDE/secp256k1)
-    ")
+    SECP256K1_DIR (for example, E:/C_INCLUDE/secp256k1)" )
   endif( SECP256K1_FOUND )
 endif( NOT EOS_ECC_IMPL STREQUAL openssl )
 

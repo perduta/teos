@@ -34,6 +34,7 @@ endif( WIN32 )
 set( Boost_USE_STATIC_LIBS ON )
 set( Boost_USE_MULTITHREADED ON )
 set( Boost_USE_STATIC_RUNTIME OFF )
+set( BOOST_ROOT $ENV{HOME}/opt/boost_1_64_0 )
 if( WIN32 )
   set( Boost_NO_SYSTEM_PATHS ON )
   set( BOOST_INCLUDEDIR $ENV{BOOST_INCLUDEDIR})
@@ -87,6 +88,4 @@ target_link_libraries( "teos_lib_test"
 
 #cotire(${APPL_NAME})
 
-install(TARGETS ${APPL_NAME} RUNTIME DESTINATION bin)
-
-
+install( TARGETS ${APPL_NAME} RUNTIME DESTINATION bin)

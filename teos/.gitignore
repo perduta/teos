@@ -1,6 +1,7 @@
 buildUbuntu
 buildWindows
 build
+install
 **/x64
 **/Debug
 *.ilk
@@ -8,4 +9,3 @@ build
 *.a
 *.lib
 **/.vs
-

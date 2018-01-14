@@ -7,7 +7,6 @@ add_library(${LIB_NAME} STATIC
   teos_create_commands.cpp
   subcommands.cpp
   ../teos_test.cpp
-  ../teos
   )
 
 target_include_directories( ${LIB_NAME} 
@@ -25,10 +24,12 @@ target_link_libraries( ${LIB_NAME}
   ${CMAKE_THREAD_LIBS_INIT}
 )
 
-#install (TARGETS ${LIB_NAME} DESTINATION lib)
-#install (FILES 
-#  teos_command.hpp 
-#  teos_get_commands.hpp 
-#  teos_wallet_commands.hpp 
-#  subcommands.hpp
-# DESTINATION include)
+install ( TARGETS ${LIB_NAME} DESTINATION lib )
+install ( FILES 
+  teos_command.hpp 
+  teos_get_commands.hpp 
+  teos_wallet_commands.hpp
+  teos_create_commands.hpp
+  subcommands.hpp
+  DESTINATION include
+)
