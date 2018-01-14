@@ -296,14 +296,13 @@ And then run these commands to build it from the source code:
 ```
 version=3.8
 build=0
-mkdir ~/temp
-cd ~/temp
 wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
 tar -xzvf cmake-$version.$build.tar.gz
-cd cmake-$version.$build/
+cd cmake-$version.$build
 ./bootstrap
 make -j4
 sudo make install
+cd .. && rm -rf cmake-$version.$build
 ```
 
 When the build process is complete, open a new terminal window and make sure `cmake` is actually version 3.8: 
@@ -325,8 +324,7 @@ Navigate to the `teos/teos` folder and create a new folder named `build`:
 
 ```
 cd teos/teos
-mkdir build
-cd build
+mkdir build && cd build
 ```
 Run CMake:
 ```
@@ -518,8 +516,7 @@ cp tests.exe ${installDir}/tests.exe
 Before you exit Ubuntu bash, you might want to clean the workspace:
 
 ```
-cd ..
-rm -rf secp256k1-zkp
+cd .. && rm -rf secp256k1-zkp
 ```
 
 Open *PowerShell*, navigate to `SECP256K1_DIR` (in our case it's `C:\Local\secp256k1`) and run `tests.exe` to make sure there are no errors:
@@ -542,8 +539,7 @@ git clone https://github.com/tokenika/teos.git
 Still using *Visual Studio 2017 Developer Command Prompt*, navigate to the `teos\teos` folder and run the following commands:
 ```
 cd teos\teos
-mkdir bulid
-cd build
+mkdir bulid && cd build
 cmake -G "Visual Studio 15 2017 Win64" ..
 msbuild teos.sln
 msbuild INSTALL.vcxproj
