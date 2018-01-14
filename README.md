@@ -18,9 +18,9 @@ Here are the benefits of using `teos` instead of `eosc`:
 * Also, as `teos` is not dependent on the entire EOS codebase, it can be easily compiled on any platform, including Windows, which is not the case with `eosc`.
 * And last but not least, `teos` has an underlying library which offers a proper API which you can use to interact programmatically with `eosd` (EOS full node).
 
-For obvious reasons everything we do is open source. The source code of `teos` is located in [this repository](https://github.com/tokenika/eosc).
+For obvious reasons everything we do is open source. The source code of `teos` is located in [this repository](https://github.com/tokenika/teos).
 
-Note: to make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. You'll find more details about it in [this document](https://github.com/tokenika/teos/blob/master/teos/EOS_LIBS_AMENDMENTS.md).
+Note: to make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. You'll find more details about it in [this document](https://github.com/tokenika/teos/blob/master/EOS_LIBS_AMENDMENTS.md).
 
 ## Comparison
 
