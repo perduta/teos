@@ -92,8 +92,8 @@ int main(int argc, const char *argv[])
     size_t colon = ipAddress.find(":");
     if (colon != std::string::npos)
     {
-      teosCommand::host = string(ipAddress.substr(0, colon));
-      teosCommand::port = string(ipAddress.substr(colon + 1,
+      TeosCommand::host = string(ipAddress.substr(0, colon));
+      TeosCommand::port = string(ipAddress.substr(colon + 1,
         ipAddress.size()));
       argv++;
       argc--;
@@ -101,8 +101,8 @@ int main(int argc, const char *argv[])
 
     if (strcmp(argv[1], "tokenika") == 0)
     {
-      teosCommand::host = "198.100.148.136";
-      teosCommand::port = "8888";
+      TeosCommand::host = "198.100.148.136";
+      TeosCommand::port = "8888";
       argv++;
       argc--;
     }
@@ -114,10 +114,10 @@ int main(int argc, const char *argv[])
     desc.add_options()
       ("help,h", "Help screen")
       ("host,H", value<string>()->default_value(
-        teosCommand::host == "" ? HOST_DEFAULT : teosCommand::host),
+        TeosCommand::host == "" ? HOST_DEFAULT : TeosCommand::host),
         "The host where eosd is running")
       ("port,p", value<string>()->default_value(
-        teosCommand::port == "" ? PORT_DEFAULT : teosCommand::port),
+        TeosCommand::port == "" ? PORT_DEFAULT : TeosCommand::port),
         "The port where eosd is running")
       ("wallet-host", value<string>()->default_value(HOST_DEFAULT),
         "The host where eos-wallet is running")
@@ -137,16 +137,16 @@ int main(int argc, const char *argv[])
     notify(vm);
 
     if (vm.count("host"))
-      teosCommand::host = string(vm["host"].as<string>());
+      TeosCommand::host = string(vm["host"].as<string>());
     if (vm.count("port"))
-      teosCommand::port = string(vm["port"].as<string>());
+      TeosCommand::port = string(vm["port"].as<string>());
 
     if (vm.count("wallet-host"))
-      teosCommand::walletHost = string(vm["wallet-host"].as<string>());
+      TeosCommand::walletHost = string(vm["wallet-host"].as<string>());
     if (vm.count("wallet-port"))
-      teosCommand::walletPort = string(vm["wallet-port"].as<string>());
+      TeosCommand::walletPort = string(vm["wallet-port"].as<string>());
     if (vm.count("verbose"))
-      teosCommand::verbose = true;
+      TeosCommand::verbose = true;
 
     if (to_pass_further.size() > 0)
       command = to_pass_further[0];

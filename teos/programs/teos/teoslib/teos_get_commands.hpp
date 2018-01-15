@@ -28,11 +28,11 @@ extern const string getCommandPath;
 
 /* EXAMPLARY TEMPLATE
 
-    class XxxYyy : public teosCommand
+    class XxxYyy : public TeosCommand
     {
     public:
 
-      XxxYyy(ptree reqJson, bool raw = false) : teosCommand(
+      XxxYyy(ptree reqJson, bool raw = false) : TeosCommand(
         string(xxxCommandPath + "get_info").c_str(), reqJson, raw) {
           callEosd();
         }
@@ -87,11 +87,11 @@ Usage: ./teos xxx yyy [-j '{"argName":"argType"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return XxxYyy(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("block number", "%d", command.get<int>("block_num"));
         output("timestamp", "%s", command.get<string>("timestamp").c_str());
         output("ref block prefix", "%s", command.get<string>("ref_block_prefix").c_str());
@@ -147,11 +147,11 @@ namespace tokenika
      * }
      * @endverbatim
      */
-    class GetInfo : public teosCommand
+    class GetInfo : public TeosCommand
     {
     public:
 
-      GetInfo(ptree reqJson, bool raw = false) : teosCommand(
+      GetInfo(ptree reqJson, bool raw = false) : TeosCommand(
         string(getCommandPath + "get_info").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -188,11 +188,11 @@ Usage: ./teos get info [-j '{}'] [OPTIONS]
         return true;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return GetInfo(reqJson, is_raw);
       }
 
-      void getOutput(tokenika::teos::teosCommand command) {
+      void getOutput(tokenika::teos::TeosCommand command) {
         output("head block", "%d", command.get<int>("head_block_num"));
         output("head block time", "%s", GET_STRING(command, "head_block_time"));
         output("last irreversible block", "%d", command.get<int>("last_irreversible_block_num"));
@@ -250,7 +250,7 @@ Usage: ./teos get info [-j '{}'] [OPTIONS]
  * }
  * @endverbatim
  *account
- * It is available with the \ref tokenika::teos::teosCommand::getRcvJson() method.
+ * It is available with the \ref tokenika::teos::TeosCommand::getRcvJson() method.
  *
  * Note that time is a string. For processing, it has to be expressed as a
  * structure and afterwords back to a string. Helper functions, namely
@@ -290,11 +290,11 @@ Usage: ./teos get info [-j '{}'] [OPTIONS]
  * }
  * @endverbatim
  */
-    class GetBlock : public teosCommand
+    class GetBlock : public TeosCommand
     {
     public:
 
-      GetBlock(ptree reqJson, bool raw = false) : teosCommand(
+      GetBlock(ptree reqJson, bool raw = false) : TeosCommand(
         string(getCommandPath + "get_block").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -361,11 +361,11 @@ Usage: ./teos get block [-j '{"block_num_or_id":"int | string"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return GetBlock(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("block number", "%d", command.get<int>("block_num"));
         output("timestamp", "%s", GET_STRING(command, "timestamp"));
         output("ref block prefix", "%s", GET_STRING(command, "ref_block_prefix"));
@@ -415,14 +415,14 @@ cout << R"EOF(
     /**
      * @brief Fetch a blockchain account
      * 
-     * Extends the teosCommand class so that it addresses the 'get account' command
+     * Extends the TeosCommand class so that it addresses the 'get account' command
      * to the blockchain.
     */
-    class GetAccount : public teosCommand
+    class GetAccount : public TeosCommand
     {
     public:
 
-      GetAccount(ptree reqJson, bool raw = false) : teosCommand(
+      GetAccount(ptree reqJson, bool raw = false) : TeosCommand(
         string(getCommandPath + "get_account").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -481,11 +481,11 @@ Usage: ./teos get account [-j '{"account_name":"string"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return GetAccount(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("account name", "%s", GET_STRING(command, "account_name"));
         output("eos balance", "%s", GET_STRING(command, "eos_balance"));
         output("staked balance", "%s", GET_STRING(command, "staked_balance"));
@@ -516,14 +516,14 @@ printout:
       /**
       * @brief Retrieve the code and ABI for an account
       *
-      * Extends the teosCommand class so that it addresses the 'get account' command
+      * Extends the TeosCommand class so that it addresses the 'get account' command
       * to the blockchain.
       */
-      class GetCode : public teosCommand
+      class GetCode : public TeosCommand
       {
       public:
 
-        GetCode(ptree reqJson, bool raw = false) : teosCommand(
+        GetCode(ptree reqJson, bool raw = false) : TeosCommand(
           string(getCommandPath + "get_code").c_str(), reqJson, raw) {
           callEosd();
         }
@@ -579,11 +579,11 @@ Usage: ./teos get code [-j '{"account_name":"string"}'] [OPTIONS]
           return ok;
         }
 
-        teosCommand getCommand(bool is_raw) {
+        TeosCommand getCommand(bool is_raw) {
           return GetCode(reqJson, is_raw);
         }
 
-        void getOutput(teosCommand command) {
+        void getOutput(TeosCommand command) {
           output("account name", "%s", GET_STRING(command, "account_name"));
           output("code hash", "%s", GET_STRING(command, "code_hash"));
           output("wast", "%s", GET_STRING(command, "wast"));
@@ -614,21 +614,21 @@ printout:
       /**
       * @brief Retrieve the contents of a database table.
       *
-      * Extends the teosCommand class so that it addresses the 'get account' command
+      * Extends the TeosCommand class so that it addresses the 'get account' command
       * to the blockchain.
       */
-      class GetTable : public teosCommand
+      class GetTable : public TeosCommand
       {
       public:
 
-        GetTable(ptree reqJson, bool raw = false) : teosCommand(
+        GetTable(ptree reqJson, bool raw = false) : TeosCommand(
           string(getCommandPath + "get_table").c_str(), reqJson, raw) {
           callEosd();
         }
 
         string normRequest(ptree& reqJson) {
           reqJson.put("json", true);          
-          return teosCommand::normRequest(reqJson);
+          return TeosCommand::normRequest(reqJson);
         }
 
       };
@@ -689,11 +689,11 @@ Usage: ./teos get table [-j '{"scope""":"string","code":"string","table":"table"
           return ok;
         }
 
-        teosCommand getCommand(bool is_raw) {
+        TeosCommand getCommand(bool is_raw) {
           return GetTable(reqJson, is_raw);
         }
 
-        void getOutput(teosCommand command) {
+        void getOutput(TeosCommand command) {
           output("TO_DO");
         }
 
@@ -723,11 +723,11 @@ printout:
         }
       };
 
-//      class XxxYyy : public teosCommand
+//      class XxxYyy : public TeosCommand
 //      {
 //      public:
 //
-//        XxxYyy(ptree reqJson, bool raw = false) : teosCommand(
+//        XxxYyy(ptree reqJson, bool raw = false) : TeosCommand(
 //          string(xxxCommandPath + "get_info").c_str(), reqJson, raw) {
 //          callEosd();
 //        }
@@ -787,11 +787,11 @@ printout:
 //          return ok;
 //        }
 //
-//        teosCommand getCommand(bool is_raw) {
+//        TeosCommand getCommand(bool is_raw) {
 //          return XxxYyy(reqJson, is_raw);
 //        }
 //
-//        void getOutput(teosCommand command) {
+//        void getOutput(TeosCommand command) {
 //          output("block number", "%d", command.get<int>("block_num"));
 //          output("timestamp", "%s", command.get<string>("timestamp").c_str());
 //          output("ref block prefix", "%s", command.get<string>("ref_block_prefix").c_str());

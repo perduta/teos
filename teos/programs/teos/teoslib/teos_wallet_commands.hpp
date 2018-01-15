@@ -24,11 +24,11 @@ namespace tokenika
      * @brief Create a new wallet locally
      * 
      */
-    class WalletCreate : public teosCommand
+    class WalletCreate : public TeosCommand
     {
     public:
 
-      WalletCreate(ptree reqJson, bool raw = false) : teosCommand(
+      WalletCreate(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "create").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -94,11 +94,11 @@ Usage: ./teos wallet create [-j '{"name":"wallet_name"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletCreate(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("password", "%s", GET_STRING(command, "password"));
         output("You need to save this password to be able to lock/unlock the wallet!");
       }
@@ -106,7 +106,7 @@ Usage: ./teos wallet create [-j '{"name":"wallet_name"}'] [OPTIONS]
       void getExample() {
         cout << R"EOF(
 boost::property_tree::ptree reqJson;
-ptree config = teosCommand::getConfig();
+ptree config = TeosCommand::getConfig();
 reqJson.put("name", config.get("teos.tokenikaWallet", TOKENIKA_WALLET));
 WalletCreate walletCreate(reqJson);
 cout << walletCreate.toStringRcv() << endl;
@@ -116,7 +116,7 @@ printout:
 )EOF" << endl;
 
         boost::property_tree::ptree reqJson;
-        ptree config = teosCommand::getConfig();
+        ptree config = TeosCommand::getConfig();
         reqJson.put("name", config.get("teos.tokenikaWallet", TOKENIKA_WALLET));
         WalletCreate walletCreate(reqJson);
         cout << walletCreate.toStringRcv() << endl;
@@ -131,11 +131,11 @@ printout:
      * @brief Import private key into wallet
      * 
      */
-    class WalletImport : public teosCommand
+    class WalletImport : public TeosCommand
     {
     public:
 
-      WalletImport(ptree reqJson, bool raw = false) : teosCommand(
+      WalletImport(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "import_key").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -203,11 +203,11 @@ Usage: ./teos wallet import [-j '{"name":"string", "key":"string"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletImport(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("wallet", "%s", walletName.c_str());
         output("key imported", "%s", key.c_str());
       }
@@ -221,11 +221,11 @@ Usage: ./teos wallet import [-j '{"name":"string", "key":"string"}'] [OPTIONS]
     * @brief List opened wallets, *= unlocked
     *wallets
     */
-    class WalletList : public teosCommand
+    class WalletList : public TeosCommand
     {
     public:
 
-      WalletList(ptree reqJson, bool raw = false) : teosCommand(
+      WalletList(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "list_wallets").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -265,11 +265,11 @@ Usage: ./teos wallet list [-j '{}'] [OPTIONS]
         return true;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletList(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         ptree rcvJson = command.getRcvJson();
         BOOST_FOREACH(ptree::value_type &v, rcvJson)
         {
@@ -302,11 +302,11 @@ printout:
     /**
     * @brief Open an existing wallet.
     */
-    class WalletOpen : public teosCommand
+    class WalletOpen : public TeosCommand
     {
     public:
 
-      WalletOpen(ptree reqJson, bool raw = false) : teosCommand(
+      WalletOpen(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "open").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -370,18 +370,18 @@ Usage: ./teos wallet open [-j '{"name":"string"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletOpen(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("wallet opened", "%s", walletName.c_str());
       }
 
       void getExample() {
         cout << R"EOF(
 boost::property_tree::ptree reqJson;
-ptree config = teosCommand::getConfig();
+ptree config = TeosCommand::getConfig();
 reqJson.put("name", config.get("teos.tokenikaWallet", TOKENIKA_WALLET));
 WalletOpen walletOpen(reqJson);
 cout << walletOpen.toStringRcv() << endl;
@@ -391,7 +391,7 @@ printout:
 )EOF" << endl;
 
         boost::property_tree::ptree reqJson;
-        ptree config = teosCommand::getConfig();
+        ptree config = TeosCommand::getConfig();
         reqJson.put("name", config.get("teos.tokenikaWallet", TOKENIKA_WALLET));
         WalletOpen walletOpen(reqJson);
         cout << walletOpen.toStringRcv() << endl;
@@ -405,11 +405,11 @@ printout:
     /**
     * @brief Lock wallet
     */
-    class WalletLock : public teosCommand
+    class WalletLock : public TeosCommand
     {
     public:
 
-      WalletLock(ptree reqJson, bool raw = false) : teosCommand(
+      WalletLock(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "lock").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -473,18 +473,18 @@ Usage: ./teos wallet lock [-j '{"name":"string"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletLock(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("wallet lock", "%s", walletName.c_str());
       }
 
       void getExample() {
         cout << R"EOF(
 boost::property_tree::ptree reqJson;
-ptree config = teosCommand::getConfig();
+ptree config = TeosCommand::getConfig();
 reqJson.put("name", config.get("teos.tokenikaWallet", TOKENIKA_WALLET));
 WalletLock walletLock(reqJson);
 cout << walletLock.toStringRcv() << endl;
@@ -494,7 +494,7 @@ printout:
 )EOF" << endl;
 
         boost::property_tree::ptree reqJson;
-        ptree config = teosCommand::getConfig();
+        ptree config = TeosCommand::getConfig();
         reqJson.put("name", config.get("teos.tokenikaWallet", TOKENIKA_WALLET));
         WalletLock walletLock(reqJson);
         cout << walletLock.toStringRcv() << endl;
@@ -508,11 +508,11 @@ printout:
     /**
     * @brief Lock all unlocked wallets
     */
-    class WalletLockAll : public teosCommand
+    class WalletLockAll : public TeosCommand
     {
     public:
 
-      WalletLockAll(ptree reqJson, bool raw = false) : teosCommand(
+      WalletLockAll(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "lock_all").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -557,11 +557,11 @@ Usage: ./teos wallet lock_all [-j '{}'] [OPTIONS]
         return true;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletLockAll(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("wallets lock", "%s", "all");
       }
 
@@ -589,11 +589,11 @@ printout:
     * @brief Unlock wallet
     *
     */
-    class WalletUnlock : public teosCommand
+    class WalletUnlock : public TeosCommand
     {
     public:
 
-      WalletUnlock(ptree reqJson, bool raw = false) : teosCommand(
+      WalletUnlock(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "unlock").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -660,11 +660,11 @@ Usage: ./teos wallet import [-j '{"NSON":"string"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletUnlock(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("wallet unlocked", "%s", walletName.c_str());
       }
 
@@ -677,11 +677,11 @@ Usage: ./teos wallet import [-j '{"NSON":"string"}'] [OPTIONS]
     * @brief List opened wallets, *= unlocked
     *
     */
-    class WalletKeys : public teosCommand
+    class WalletKeys : public TeosCommand
     {
     public:
 
-      WalletKeys(ptree reqJson, bool raw = false) : teosCommand(
+      WalletKeys(ptree reqJson, bool raw = false) : TeosCommand(
         string(walletCommandPath + "list_keys").c_str(), reqJson, raw) {
         callEosd();
       }
@@ -721,11 +721,11 @@ Usage: ./teos wallet list [-j '{}'] [OPTIONS]
         return true;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return WalletKeys(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         ptree rcvJson = command.getRcvJson();
         BOOST_FOREACH(ptree::value_type &v, rcvJson)
         {

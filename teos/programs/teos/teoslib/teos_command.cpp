@@ -97,10 +97,10 @@ namespace tokenika
     }
 
 /***************************************************************************
-Definitions for class teosCommand.
+Definitions for class TeosCommand.
 ****************************************************************************/
 
-    string teosCommand::normRequest(ptree& reqJson) {
+    string TeosCommand::normRequest(ptree& reqJson) {
       stringstream ss;
       json_parser::write_json(ss, reqJson, false);
       string postMsg = ss.str();
@@ -108,7 +108,7 @@ Definitions for class teosCommand.
       return postMsg;
     }
 
-    void teosCommand::normResponse(string response, ptree &respJson) {
+    void TeosCommand::normResponse(string response, ptree &respJson) {
       stringstream ss;
       ss << response;
       try {
@@ -121,7 +121,7 @@ Definitions for class teosCommand.
       }
     }
 
-    ptree teosCommand::getConfig(bool verbose) {
+    ptree TeosCommand::getConfig(bool verbose) {
       ptree config;
       try
       {
@@ -138,7 +138,7 @@ Definitions for class teosCommand.
       return config;
     }
 
-    void teosCommand::callEosd()
+    void TeosCommand::callEosd()
     {
       using namespace std;
       namespace ip = boost::asio::ip;
@@ -153,12 +153,12 @@ Definitions for class teosCommand.
         host_ = config.get("teos.server", HOST_DEFAULT);
       if (port == "")
         port_ = config.get("teos.port", PORT_DEFAULT);
-      if (teosCommand::walletHost == "")
-        teosCommand::walletHost = config.get("teos.walletServer", HOST_DEFAULT);
-      if (teosCommand::walletPort == "")
-        teosCommand::walletPort = config.get("teos.walletPort", PORT_DEFAULT);
-      if (!teosCommand::verbose)
-        teosCommand::verbose = config.get("teos.verbose", false);
+      if (TeosCommand::walletHost == "")
+        TeosCommand::walletHost = config.get("teos.walletServer", HOST_DEFAULT);
+      if (TeosCommand::walletPort == "")
+        TeosCommand::walletPort = config.get("teos.walletPort", PORT_DEFAULT);
+      if (!TeosCommand::verbose)
+        TeosCommand::verbose = config.get("teos.verbose", false);
 
       try {
         boost::asio::io_service io_service;
@@ -236,35 +236,35 @@ Definitions for class teosCommand.
       }
     }
 
-    teosCommand::teosCommand( string path, ptree reqJson, bool isRaw) : 
+    TeosCommand::TeosCommand( string path, ptree reqJson, bool isRaw) : 
       path(path), reqJson(reqJson), isRaw(isRaw){
     }
 
-    string teosCommand::toStringPost() const {
+    string TeosCommand::toStringPost() const {
       stringstream ss;
       json_parser::
         write_json(ss, reqJson, !isRaw);
       return ss.str();
     }
 
-    string teosCommand::toStringRcv() const {
+    string TeosCommand::toStringRcv() const {
       stringstream ss;
       json_parser::
         write_json(ss, respJson, !isRaw);
       return ss.str();
     }
 
-    string teosCommand::host = "";
-    string teosCommand::port = "";
-    string teosCommand::walletHost = "";
-    string teosCommand::walletPort = "";
-    bool teosCommand::verbose = false;
+    string TeosCommand::host = "";
+    string TeosCommand::port = "";
+    string TeosCommand::walletHost = "";
+    string TeosCommand::walletPort = "";
+    bool TeosCommand::verbose = false;
 
     /******************************************************************************
       Definitions for class 'command_options'
     ******************************************************************************/
 
-    void CommandOptions::onError(teosCommand command) {
+    void CommandOptions::onError(TeosCommand command) {
       std::cerr << "ERROR!" << endl << command.get<string>(teos_ERROR) << endl;
     }
 
@@ -305,7 +305,7 @@ Definitions for class teosCommand.
           getExample();
         }
         else if (is_arg) {
-          teosCommand command = getCommand(isRaw);
+          TeosCommand command = getCommand(isRaw);
           if (command.isError()) {
             onError(command);
             return;

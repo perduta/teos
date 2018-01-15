@@ -84,14 +84,14 @@ namespace tokenika
      * connects to the blockchain and receives a json reflacting an aspect of the
      * blockchain state.
      *
-     * `teosCommand` is the superclass for any specific command class in this
+     * `TeosCommand` is the superclass for any specific command class in this
      * library.
      *
      * Parameters of the connection used are specified in file `teos_config.json`,
      * in the root directory of the project.
      *
      */
-    class teosCommand {
+    class TeosCommand {
 
       string path;
       bool isErrorSet = false;
@@ -134,7 +134,7 @@ namespace tokenika
        * @param reqJson json tree, for example {"block_num_or_id"="25"}
        * @param isRaw boolean, determines printout of the to-string methods
        */
-      teosCommand(
+      TeosCommand(
         string path,
         ptree reqJson,
         bool isRaw = false);
@@ -290,10 +290,10 @@ namespace tokenika
        * @brief Returns command object, containing a responce from the blockchain.
        *
        * @param isRaw raw or pretty printout flag
-       * @return teosCommand command object
+       * @return TeosCommand command object
        */
-      virtual teosCommand getCommand(bool isRaw) {
-        return teosCommand("", reqJson);
+      virtual TeosCommand getCommand(bool isRaw) {
+        return TeosCommand("", reqJson);
       }
 
       /**source /mnt/hgfs/Workspaces/EOS/teosBash/teosBash $EOSIO_INSTALL_DIR
@@ -310,11 +310,11 @@ namespace tokenika
        *
        * @param command command object, containing a responce from the blockchain.
        */
-      virtual void getOutput(teosCommand command) {
+      virtual void getOutput(TeosCommand command) {
         cout << command.toStringRcv() << endl;
       }
 
-      virtual void onError(teosCommand command);
+      virtual void onError(TeosCommand command);
 
     public:
       CommandOptions(int argc, const char *argv[]) : argc_(argc), argv_(argv) {}

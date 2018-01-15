@@ -9,8 +9,8 @@ int main()
 {
   using namespace tokenika::teos;
 
-  teosCommand::host = "198.100.148.136";
-  teosCommand::port = "8888";
+  TeosCommand::host = "198.100.148.136";
+  TeosCommand::port = "8888";
 
   ptree getInfoJson;
 

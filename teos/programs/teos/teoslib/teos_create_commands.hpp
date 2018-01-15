@@ -13,11 +13,11 @@ namespace tokenika
 {
   namespace teos
   {
-    class CreateKey : public teosCommand
+    class CreateKey : public TeosCommand
     {
     public:
 
-      CreateKey(ptree reqJson, bool raw = false) : teosCommand(
+      CreateKey(ptree reqJson, bool raw = false) : TeosCommand(
         "", reqJson, raw) {
         KeyPair kp;
         respJson.put("name", reqJson.get<string>("name"));
@@ -78,11 +78,11 @@ Usage: ./teos create key [-j '{"name":"key_name"}'] [OPTIONS]
         return ok;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return CreateKey(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("key name", "%s", GET_STRING(command, "name"));
         output("private key", "%s", GET_STRING(command, "privateKey"));
         output("public key", "%s", GET_STRING(command, "publicKey"));

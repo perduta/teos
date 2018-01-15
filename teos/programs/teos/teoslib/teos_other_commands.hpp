@@ -7,11 +7,11 @@ namespace tokenika
 {
   namespace teos
   {
-    class VersionClient : public teosCommand
+    class VersionClient : public TeosCommand
     {
     public:
 
-      VersionClient(ptree reqJson, bool raw = false) : teosCommand(
+      VersionClient(ptree reqJson, bool raw = false) : TeosCommand(
         "", reqJson, raw) {
         stringstream ss;
         ss << PROJECT_NAME << " " <<VERSION_MAJOR << "." << VERSION_MINOR;
@@ -46,11 +46,11 @@ Usage: ./teos version client [-j '{}'] [OPTIONS]
         return true;
       }
 
-      teosCommand getCommand(bool is_raw) {
+      TeosCommand getCommand(bool is_raw) {
         return VersionClient(reqJson, is_raw);
       }
 
-      void getOutput(teosCommand command) {
+      void getOutput(TeosCommand command) {
         output("Version", "%s", GET_STRING(command, "version"));
       }
 

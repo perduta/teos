@@ -25,7 +25,6 @@ elliptic_common.cpp:(.text+0x42f8): undefined reference to `fc::ecc::extended_pr
 libraries/fc/libfc.a(elliptic_common.cpp.o): In function `fc::ecc::extended_private_key::generate_master(char const*, unsigned int)':
 elliptic_common.cpp:(.text+0x4556): undefined reference to `fc::ecc::extended_private_key::extended_private_key(fc::ecc::private_key const&, fc::sha256 const&, int, int, unsigned char)'
 ```
-
 ## secp256k1 library for Windows - erratum
 
 In fact, there is available a better Windows source of the `secp256k1` library.
