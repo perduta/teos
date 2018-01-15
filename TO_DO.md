@@ -1,18 +1,3 @@
-```
-Edit > Virtual Network Editor: Host-only
-Virtual Machine Settings > Network Adapter: Host-only
-
-ifconfig
-## inet 192.168.229.141  netmask 255.255.255.0  broadcast 192.168.229.255
-```
-eosd config.ini: http-server-endpoint = 192.168.229.141:8888 # Host-only
-
-* Wallet NOT on localhost  -- *
-* - Password and/or Private Keys - *
-* - are transferred unencrypted.
-
-OK, now trying the tunnel.
-
 ### gmp and secp256k1
 
 gmp and secp256k1 libraries are not used if 
@@ -314,9 +299,6 @@ s\fc\fc.vcxproj]
   'secp256k1_rangeproof_info': identifier not found [E:\Workspaces\EOS\Pentagon\teos\buildWindows\libraries\
 fc\fc.vcxproj]
 ```
-
-
-
 ## Additional Windows libraries
 
 All the listed dependencies are automatically managed with the `CMakeLists` files. Here, they are named for the record sake.
@@ -355,3 +337,41 @@ All the listed macros are automatically managed with the `CMakeLists` files. Her
 
 - _CRT_SECURE_NO_WARNINGS
 - -D_WIN32_WINNT=0x0501
+
+## secp256k1 library for Windows (1)
+[See](#cp ${installDir}/lib/libsecp256k1.a ${installDir}/lib/secp256k1.lib) [or](#cp ${installDir}/lib/libsecp256k1.a ${installDir}/lib/secp256k1.lib)
+Install MSYS2.
+
+Use `mingw64.exe` shell:
+```
+pacman -S make
+pacman -S autoconf
+pacman -S perl
+pacman -S automake
+pacman -S libtool
+pacman -S mingw-w64-x86_64-toolchain
+	Enter a selection (default=all): 3
+```
+```
+export CFLAGS="-v" # let compiler be verbose
+export installDir=/e/C_INCLUDE/secp256k1/
+export TEMP_DIR = (...) # chose a working directory 
+```
+Get a copy of the `secp256k1` repository:
+```
+cd ${TEMP_DIR}
+git clone https://github.com/cryptonomex/secp256k1-zkp.git
+cd secp256k1-zkp
+```
+```
+cd ${TEMP_DIR}/secp256k1-zkp/
+./autogen.sh
+./configure --prefix=${installDir}
+make
+make install
+cp ${installDir}/lib/libsecp256k1.a ${installDir}/lib/secp256k1.lib
+cp /mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/libgcc.a ${installDir}/lib/gcc.lib
+cp /mingw64/x86_64-w64-mingw32/lib/libmingwex.a ${installDir}/lib/mingwex.lib
+cp /mingw64/x86_64-w64-mingw32/lib/libmsvcrt.a ${installDir}/lib/msvcrt.lib #klops printf already defined in teoslib.lib(teos_command.obj)
+cp /mingw64/lib/libgmp.a ${installDir}/../gmp/lib/gmp.lib 
+```

@@ -137,7 +137,7 @@ if( WIN32 )
   if( NOT EOS_ECC_IMPL STREQUAL openssl )
     target_link_libraries( ${LIB_NAME}
       PUBLIC
-      ${SECP256K1_LIBRARIES_DIR}/gcc.lib    
+      ${SECP256K1_LIBRARIES_DIR}/gcc.lib  
     )
   endif()
 
