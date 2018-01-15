@@ -405,19 +405,20 @@ For most of its functionality `teos` is only dependent on [Boost](http://www.boo
 
 On Windows the main difficulty is to have all those dependencies as Windows-compiled libraries. Advanced Windows users might want to build everything from source files (it's certainly doable) and ultimately we will aim for that. However, at this stage we recommend using pre-compiled binaries:
 
-- Boost version 1.64 (not higher as it might be incompatible with CMake)
+- [Boost](http://www.boost.org/) version 1.64 (not higher as it might be incompatible with CMake)
   - Windows binaries are available [here](https://sourceforge.net/projects/boost/files/boost-binaries/1.64.0/) (for a 64bit machine select `boost_1_64_0-msvc-14.1-64.exe`).
   - Define an environment variable `BOOST_INCLUDEDIR` pointing to the location you've chosen to store the Boost libraries (e.g. `C:\Local\boost_1_64_0`).
   - Define an environment variable `BOOST_LIBRARYDIR` pointing to the `lib64-msvc-14.1` folder inside the location you've chosen to store the Boost libraries (e.g. `C:\Local\boost_1_64_0\lib64-msvc-14.1`).
-- OpenSLL version 1.1.0
+- [OpenSSL](https://www.openssl.org/) version 1.1.0
   - Windows binaries are available [here](https://slproweb.com/products/Win32OpenSSL.html) (for a 64bit machine select `Win64OpenSSL-1_1_0g.exe`).
   - Run the installer and when prompted choose to copy the DLLs to the `bin` directory.
   - Define an environment variable `OPENSSL_ROOT_DIR` pointing to the location you've chosen to store the OpenSLL libraries (e.g. `C:\Local\OpenSSL-Win64`).
-- GMP version 4.1 (Please note that [MPIR](http://www.mpir.org/downloads.html) may be considered as a good Windows-ready alternative to  [GMP](https://gmplib.org/), as described [here](https://stackoverflow.com/questions/47359417/how-to-compile-gmp-for-windows-using-visual-studio.). In a future release of `teos` we will probably switch to MPIR, as it seems to be better suited for Windows).
+- [GMP](https://gmplib.org/) version 4.1 (Please note that [MPIR](http://www.mpir.org/downloads.html) may be considered as a good Windows-ready alternative to  GMP, as described [here](https://stackoverflow.com/questions/47359417/how-to-compile-gmp-for-windows-using-visual-studio.). In a future release of `teos` we will probably switch to MPIR, as it seems to be better suited for Windows).
   - Window binaries are available [here](https://cs.nyu.edu/~exact/core/gmp/index.html) (choose static ones for MinGW, i.e. `gmp-static-mingw-4.1.tar.gz`). You might need [7-Zip](http://www.7-zip.org/) to extract them.
   - Define an environment variable `GMP_DIR` pointing to the location you've chosen to store the GMP libraries (e.g. `C:\Local\gmp-static-mingw-4.1`).
-- Secp256k1 - as there are no pre-compiled binaries available what you'll need to do is cross-compilation between Linux and Windows. This will be described in the next section. But first do these simple steps:
-  - Create a location of your choice where Secp256k1 libraries will be stored. In our case it's `c:\Local\secp256k1`.
+  - Inside `GMP_DIR` navigate to the `lib` folder and rename `libgmp.a` to `gmp.lib` to match Windows conventions.
+- [Secp256k1](https://github.com/bitcoin-core/secp256k1) - as there are no pre-compiled binaries available what you'll need to do is cross-compilation between Linux and Windows. This will be described in the next section. But first do these preliminary steps:
+  - Create a location of your choice where Secp256k1 libraries will be stored. In our case it's `C:\Local\secp256k1`.
   - Define an environment variable `SECP256K1_DIR` pointing to the above directory.
 
 
@@ -437,16 +438,16 @@ And before you continue, update & upgrade Ubuntu:
 
 ```
 sudo apt update
-sudo apt full-upgrade
+sudo apt upgrade
 ```
 
 Make sure that you have these tools installed:
 
 ```
-sudo apt-get install mingw-w64
-sudo apt-get install autoconf
-sudo apt-get install make
-sudo apt-get install libtool
+sudo apt install autoconf
+sudo apt install make
+sudo apt install libtool
+sudo apt install mingw-w64
 ```
 
 Get a copy of the `secp256k1` repository and navigate to its folder:
@@ -456,19 +457,10 @@ git clone https://github.com/cryptonomex/secp256k1-zkp.git
 cd secp256k1-zkp
 ```
 
-Define those two variables:
+Define an environment variable called `installDir`. Please note that its value needs to match the Windows destination for your *Secp256k1* libraries (in our case `C:\Local\secp256k1`), as described in the previous section. So probably you'll need to apply a different path than the one used below, unless you've chosen the same location as we did.
 
 ```
-export CFLAGS="-v"
 export installDir=/mnt/c/Local/secp256k1/
-```
-
-Please note that the value of the variable `installDir` needs to match the Windows destination for your *Secp256k1* libraries, as described in the previous section. So probably you'll need to apply a different path than the one used above, unless you've chosen the same location as we did.
-
-If you are doing this step not for the first time, you need to reset the workspace (otherwise skip this step):
-
-```
-make clean
 ```
 
 And now you're ready to build and install *Secp256k1*:
@@ -480,16 +472,16 @@ make
 make install
 ```
 
-For convenience let's rename the `libsecp256k1` file to match Windows conventions:
+Rename the `libsecp256k1` file to match Windows conventions:
 
 ```
 mv ${installDir}/lib/libsecp256k1.a ${installDir}/lib/secp256k1.lib
 ```
 
-Copy the library `libgcc` which comes as part of *Mingw*:
+Copy  the `libgcc` library from Ubuntu to Windows:
 
 ```
-cp /usr/lib/gcc/x86_64-linux-gnu/7/libgcc.a ${installDir}/lib/gcc.lib
+cp /usr/lib/gcc/x86_64-w64-mingw32/5.3-posix/libgcc.a ${installDir}/lib/gcc.lib
 ```
 
 And finally, copy the executable `tests` which will be used for testing:
@@ -504,7 +496,7 @@ Before you exit Ubuntu bash, you might want to clean the workspace:
 cd .. && rm -rf secp256k1-zkp
 ```
 
-Open *PowerShell*, navigate to `SECP256K1_DIR` (in our case it's `C:\Local\secp256k1`) and run `tests.exe` to make sure there are no errors:
+Open *PowerShell*, navigate to `SECP256K1_DIR` (in our case it's `C:\Local\secp256k1`) and run `tests.exe` to make sure *Secp256k1* works properly on Windows:
 
 ```
 cd C:\Local\secp256k1
