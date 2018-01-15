@@ -311,7 +311,7 @@ cmake --version
 
 #### Cloning the source code
 
-Navigate to a location of your choice on your machine and clone *teos* repository:
+Navigate to a location of your choice and clone *teos* repository:
 
 ```
 git clone https://github.com/tokenika/teos.git
