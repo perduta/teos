@@ -14,7 +14,7 @@ int main()
 
   ptree getInfoJson;
 
-  // Invoke 'GetInfo' command:
+  // Invoke GetInfo command:
   GetInfo getInfo(getInfoJson);
   cout << getInfo.toStringRcv() << endl;
 
@@ -27,6 +27,8 @@ int main()
   // Use reference to the last block:
   getBlockJson.put("block_num_or_id",
     getInfo.get<int>("last_irreversible_block_num"));
+
+  // Invoke GetBlock command:
   GetBlock getBlock(getBlockJson);
   cout << getBlock.toStringRcv() << endl;
 

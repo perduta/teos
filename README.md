@@ -182,18 +182,19 @@ Let's consider a code snippet illustrating its usage:
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-#include "teosLib/teos_get_commands.hpp"
 
-int main(int argc, char *argv[])
+#include "teoslib/teos_get_commands.hpp"
+
+int main()
 {
   using namespace tokenika::teos;
 
-  TeosCommand::host = "198.100.148.136";
-  TeosCommand::port = "8888";
+  teosCommand::host = "198.100.148.136";
+  teosCommand::port = "8888";
 
   ptree getInfoJson;
 
-  // Invoke 'GetInfo' command:
+  // Invoke GetInfo command:
   GetInfo getInfo(getInfoJson);
   cout << getInfo.toStringRcv() << endl;
 
@@ -206,12 +207,15 @@ int main(int argc, char *argv[])
   // Use reference to the last block:
   getBlockJson.put("block_num_or_id",
     getInfo.get<int>("last_irreversible_block_num"));
+
+  // Invoke GetBlock command:
   GetBlock getBlock(getBlockJson);
   cout << getBlock.toStringRcv() << endl;
 
   if (getBlock.isError()) {
     return -1;
   }
+
   return 0;
 }
 ```
@@ -241,7 +245,6 @@ Here is the outcome of the above code:
     "block_num": "1707225",
     "ref_block_prefix": "998303736"
 }
-
 ```
 
 ## List of currently supported commands
