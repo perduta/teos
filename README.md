@@ -6,9 +6,9 @@ For those less familiar with EOS codebase, `eosc` is the official CLI (Command L
 
 When working with EOS smart-contracts, we've found that `eosc` has some inconvenient limitations:
 
-* Firstly, it's hard to use `eosc` programmatically, as it doesn't offer an API.
-* Secondly, it is quite heavyweight in terms of external dependencies, as it's tightly connected to the entire EOS codebase.
-* And finally, it is not ready to be used in Windows environment, while our plans include opening up EOS for smart-contract development on Windows.
+* Firstly, it's quite heavyweight in terms of external dependencies, as it's tightly connected to the entire EOS codebase.
+* Secondly, it's not ready to be used in Windows environment.
+* And finally, it's hard to use `eosc` programmatically, as it doesn't offer an API.
 
 It could be enough for us to develop a minimal C++ library acting as an EOS API and this way implement all the commands supported by `eosc`. However, it was a short step to provide such a library with a command line interface, and thus create a full-blown `eosc` replacement, which we've named `teos`. 
 
@@ -20,13 +20,23 @@ Here are the benefits of using `teos` instead of `eosc`:
 
 For obvious reasons everything we do is open source. The source code of `teos` is located in [this repository](https://github.com/tokenika/teos).
 
-Note: to make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. You'll find more details about it in [this document](https://github.com/tokenika/teos/blob/master/EOS_LIBS_AMENDMENTS.md).
+Note: to make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. For more details please refer to [this document](https://github.com/tokenika/teos/blob/master/EOS_LIBS_AMENDMENTS.md).
+
+## The ultimate goal
+
+Our plans include opening up EOS for smart-contract development on any platform, including Windows. Once we're finished building the underlying API, `teos` will be an excellent starting point for creating a truly cross-platform set of development tools, including a smart-contract deployment framework similar to Ethereum's [Truffle](http://truffleframework.com/).
+
+## Public endpoint
+
+As `teos` is foremost an EOS client, this announcement includes opening up a publicly available endpoint as a gateway to trying out EOS and its testnet without the trouble of running your own full node. This endpoint can be accessed no matter if you're going to use `eosc`, the official CLI, or `teos`, our alternative. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ## Comparison
 
 As it was mentioned above, `teos` covers the same functionality as `eosc`, but it's more user friendly and offers a wider selection of options.
 
-Let's compare the `get block` command options and the response `eosc` gives:
+Let's take a look at the `get block` command and the response `eosc` gives regarding its options:
 ```
 ./eosc get block --help
 ```
@@ -37,7 +47,7 @@ Usage: ./eosc get block block
 Positionals:
 block TEXT                  The number or ID of the block to retrieve
 ```
-Whereas a similar command in `teos` will produce something like this:
+A similar command in `teos` will produce something like this:
 
 ```
 ./teos get block --help
@@ -60,7 +70,7 @@ Options:
   -r [ --raw ]                    Raw print
   -e [ --example ]                Usage example
 ```
-And now let's compare the `get block` command usage and the response `eosc` gives:
+Now, let's consider using the `get block` command in `eosc`:
 ```
 ./eosc get block 25
 ```
@@ -78,7 +88,7 @@ And now let's compare the `get block` command usage and the response `eosc` give
   "refBlockPrefix": 623236675
 }
 ```
-Whereas a similar command in `teos` will produce a response which is less verbose by default, thus more readable:
+A similar command in `teos` will produce a response which is less verbose by default, thus more readable:
 
 ```
 ./teos get block 25
@@ -128,13 +138,13 @@ And finally, for each command you can invoke an example showcasing its usage:
 ./teos get block --example
 ```
 ```
-// Invoke 'GetInfo' command:
-    ptree getInfoJson;
-    GetInfo getInfo(getInfoPostJson);
-    cout << getInfo.toStringRcv() << endl;
+// Invoke GetInfo command
+ptree getInfoJson;
+GetInfo getInfo(getInfoPostJson);
+cout << getInfo.toStringRcv() << endl;
 
 /*
-printout:
+output:
 {
     "server_version": "9703495c",
     "head_block_num": "1707240",
@@ -147,15 +157,16 @@ printout:
 }
 */
 
-// Use reference to the last block:
-    ptree GetBlockJson;
-    GetBlock_poGetBlockJsont_json.put("block_num_or_id",
-      getInfo.get<int>("last_irreversible_block_num"));
-    GetBlock GetBlock(GetBlock_post_json);
-    cout << GetBlock.toStringRcv() << endl;
+// Use reference to the last block
+ptree GetBlockJson;
+GetBlock_poGetBlockJsont_json.put("block_num_or_id", getInfo.get<int>("last_irreversible_block_num"));
+
+// Invoke GetBlock command
+GetBlock GetBlock(GetBlock_post_json);
+cout << GetBlock.toStringRcv() << endl;
 
 /*
-printout:
+output:
 {
     "previous": "001a0cd8422216f2828ef5056e9371439f80665cee99d72a5f3162ae7c0495fd",
     "timestamp": "2017-12-25T14:11:16",
@@ -564,4 +575,6 @@ Or you can test private key generation:
 
 ## Conclusion
 
-We dare to hope that this little work of ours could become an interesting alternative to the original `eosc` CLI, and maybe one day be included as part of EOS codebase. To our knowledge this is the first fully cross-platform EOS client, and also a good foundation for an EOS API.
+We dare to hope that `teos` could become an interesting alternative to the original `eosc` CLI, and maybe one day be included as part of EOS codebase. To our knowledge this is the first fully cross-platform EOS client, and also a good foundation for an EOS API.
+
+In our subsequent release, we're going to cover the entire EOS API, so you'll be able to compile and deploy an EOS smart-contract on the testnet via our full node, and do it from any operating system, including Windows.
