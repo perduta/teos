@@ -1,4 +1,5 @@
 build
+buildWindows
 install
 **/x64
 **/Debug
