@@ -45,17 +45,20 @@ Whereas a similar command in `teos` will produce something like this:
 
 ```
 Retrieve a full block from the blockchain
-Usage: ./teos get block [block_num_or_id][options]
-Usage: ./teos get block [-j {"block_num_or_id":*}][options]
+Usage: ./teos get block [block_num | block_id] [Options]
+Usage: ./teos get block [-j "{"""block_num_or_id""":"""int | string"""}"] [OPTIONS]
 
 Options:
-  -h [ --help ]           Help screen
-  -n [ --block_num ] arg  Block number
-  -i [ --block_id ] arg   Block id
-  -j [ --json ] arg       Json argument
-  -v [ --verbose ]        Print the entire received json
-  -r [ --raw ]            Raw print
-  -e [ --example ]        Usage example
+  -n [ --block_num ] arg          Block number
+  -i [ --block_id ] arg           Block id
+  -h [ --help ]                   Help screen
+  --wallet-host arg (=localhost)  The host where eos-wallet is running
+  --wallet-port arg (=8888)       The port where eos-wallet is running
+  -V [ --verbose ]                Output verbose messages on error
+  -j [ --json ] arg               Json argument
+  -v [ --received ]               Print received json
+  -r [ --raw ]                    Raw print
+  -e [ --example ]                Usage example
 ```
 And now let's compare the `get block` command usage and the response `eosc` gives:
 ```
@@ -88,7 +91,7 @@ Whereas a similar command in `teos` will produce a response which is less verbos
 ```
 But you can make it verbose, if you need:
 ```
-./teos get block 25 --verbose
+./teos get block 25 --received
 ```
 ```
 {
@@ -106,14 +109,14 @@ But you can make it verbose, if you need:
 ```
 Furthermore, you can make it both verbose and unformatted:
 ```
-./teos get block 25 --verbose --raw
+./teos get block 25 --received --raw
 ```
 ```
 {"previous":"00000018b5e0ffcd3dfede45bc261e3a04de9f1f40386a69821780e063a41448","timestamp":"2017-11-29T09:50:03","transaction_merkle_root":"0000000000000000000000000000000000000000000000000000000000000000","producer":"initf","producer_changes":"","producer_signature":"2005db1a193cc3597fdc3bd38a4375df2a9f9593390f9431f7a9b53701cd46a1b5418b9cd68edbdf2127d6ececc4d66b7a190e72a97ce9adfcc750ef0a770f5619","cycles":"","id":"000000190857c9fb43d62525bd29dc321003789c075de593ce7224bde7fc2284","block_num":"25","refBlockPrefix":"623236675"}
 ```
 Also, you can supply the arguments in *json* format:
 ```
-./teos get block --json '{"block_num_or_id":"56"}'
+./teos get block --json '{"""block_num_or_id""":"""56"""}'
 ```
 ```
 ##         block number: 56
@@ -132,7 +135,6 @@ And finally, for each command you can invoke an example showcasing its usage:
 
 /*
 printout:
-
 {
     "server_version": "9703495c",
     "head_block_num": "1707240",
@@ -143,7 +145,6 @@ printout:
     "recent_slots": "1111111111111111111111111111111111111111111111111111111111111111",
     "participation_rate": "1.00000000000000000"
 }
-
 */
 
 // Use reference to the last block:
@@ -155,7 +156,6 @@ printout:
 
 /*
 printout:
-
 {
     "previous": "001a0cd8422216f2828ef5056e9371439f80665cee99d72a5f3162ae7c0495fd",
     "timestamp": "2017-12-25T14:11:16",
@@ -168,7 +168,6 @@ printout:
     "block_num": "1707225",
     "ref_block_prefix": "998303736"
 }
-
 */
 ```
 
@@ -183,7 +182,6 @@ Let's consider a code snippet illustrating its usage:
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-
 #include "teosLib/teos_get_commands.hpp"
 
 int main(int argc, char *argv[])
@@ -214,10 +212,8 @@ int main(int argc, char *argv[])
   if (getBlock.isError()) {
     return -1;
   }
-
   return 0;
 }
-
 ```
 
 Here is the outcome of the above code:
@@ -233,7 +229,6 @@ Here is the outcome of the above code:
     "recent_slots": "1111111111111111111111111111111111111111111111111111111111111111",
     "participation_rate": "1.00000000000000000"
 }
-
 {
     "previous": "001a0cd8422216f2828ef5056e9371439f80665cee99d72a5f3162ae7c0495fd",
     "timestamp": "2017-12-25T14:11:16",
@@ -260,6 +255,7 @@ get block
 get account
 get code
 get table
+create key
 wallet create
 wallet list
 wallet keys
@@ -268,7 +264,6 @@ wallet open
 wallet lock
 wallet lock all
 wallet unlock
-create key
 ```
 
 ## Building on Ubuntu
