@@ -1,4 +1,4 @@
-# Tokenika's alternative for EOS command line interface
+# Tokenika's public EOS endpoint and command line interface
 
 ## Rationale
 
@@ -20,7 +20,7 @@ Here are the benefits of using `teos` instead of `eosc`:
 
 For obvious reasons everything we do is open source. The source code of `teos` is located in [this repository](https://github.com/tokenika/teos).
 
-Note: to make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. For more details please refer to [this document](https://github.com/tokenika/teos/blob/master/EOS_LIBS_AMENDMENTS.md).
+Note: To make our project fully cross-platform (including Windows), we needed to clone and modify some of the support libraries from the EOS codebase. For more details please refer to [this document](https://github.com/tokenika/teos/blob/master/EOS_LIBS_AMENDMENTS.md).
 
 ## The ultimate goal
 
@@ -28,9 +28,13 @@ Our plans include opening up EOS for smart-contract development on any platform,
 
 ## Public endpoint
 
-As `teos` is foremost an EOS client, this announcement includes opening up a publicly available endpoint as a gateway to trying out EOS and its testnet without the trouble of running your own full node. This endpoint can be accessed no matter if you're going to use `eosc`, the official CLI, or `teos`, our alternative. 
+As `teos` is foremost an EOS client, this announcement includes opening up a publicly available endpoint as a gateway to trying out EOS and its testnet without the trouble of running your own full node. This endpoint can be accessed no matter if you're going to use `eosc`, the official CLI, or `teos`, our alternative.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Our endpoint is available at [eos-testapi1.tokenika.io](http://eos-testapi1.tokenika.io/). It's not only fully featured, general purpose API but also has wallet API enabled for testing purposes - this should never be done on production!
+
+It is all for you to use it, test it, brake it. We want to be aware of all possible flaws before the end of the testing period.
+
+Disclaimer: Use it at your own risk and when you really know what are you doing. Do not store any key material that has or will have any value in future.
 
 ## Comparison
 
