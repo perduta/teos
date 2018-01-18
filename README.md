@@ -34,6 +34,13 @@ Our endpoint is available at [eos-testapi1.tokenika.io](http://eos-testapi1.toke
 
 It is all for you to use it, test it, brake it. We want to be aware of all possible flaws before the end of the testing period.
 
+Our endpoint is connected to the official EOS testnet. Here are the details:
+
+* API: [eos-testapi1.tokenika.io:8888](http://eos-testapi.tokenika.io:8888/)
+* P2P: [eos-testp2p1.tokenika.io:9876](http://eos-testp2p.tokenika.io:9876/) (or [p2p-testnet1.eos.io:9876](http://p2p-testnet1.eos.io:9876/), if you want to use the official one)
+
+For endpoint configuration please refer to [this document](https://github.com/tokenika/teos/blob/master/ENDPOINT_CONFIGURATION.md).
+
 Disclaimer: Use it at your own risk and when you really know what are you doing. Do not store any key material that has or will have any value in future.
 
 ## Comparison
@@ -355,11 +362,11 @@ As the result of the compilation, you should be able to find those two files in 
 
 Open a terminal window, navigate to the `install/bin` folder and run `teos`:
 ```
-./teos 198.100.148.136:8888 get info
+./teos eos-testapi1.tokenika.io:8888 get info
 ```
 The above command will connect to EOS full node running on one of our testnet servers.
 
-Alternatively, you can use the predefined placeholder `tokenika` instead of  `198.100.148.136:8888`:
+Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi1.tokenika.io:8888`:
 
 ```
 ./teos tokenika get info
@@ -549,7 +556,7 @@ And now you should be able to run `teos` and access EOS full node running on one
 ./teos 198.100.148.136:8888 get info
 ```
 
-Alternatively, you can use the predefined placeholder `tokenika` instead of  `198.100.148.136:8888`:
+Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi1.tokenika.io:8888`:
 
 ```
 ./teos tokenika get info
