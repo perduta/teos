@@ -30,14 +30,14 @@ Our plans include opening up EOS for smart-contract development on any platform,
 
 As `teos` is foremost an EOS client, this announcement includes opening up a publicly available endpoint as a gateway to trying out EOS and its testnet without the trouble of running your own full node. This endpoint can be accessed no matter if you're going to use `eosc`, the official CLI, or `teos`, our alternative.
 
-Our endpoint is available at [eos-testapi1.tokenika.io](http://eos-testapi1.tokenika.io/). It's not only fully featured, general purpose API but also has wallet API enabled for testing purposes - this should never be done on production!
+Our endpoint is available at [eos-testapi.tokenika.io](http://eos-testapi.tokenika.io/). It's not only fully featured, general purpose API but also has wallet API enabled for testing purposes - this should never be done on production!
 
 It is all for you to use it, test it, brake it. We want to be aware of all possible flaws before the end of the testing period.
 
 Our endpoint is connected to the official EOS testnet. Here are the details:
 
-* API: [eos-testapi1.tokenika.io:8888](http://eos-testapi.tokenika.io:8888/)
-* P2P: [eos-testp2p1.tokenika.io:9876](http://eos-testp2p.tokenika.io:9876/) (or [p2p-testnet1.eos.io:9876](http://p2p-testnet1.eos.io:9876/), if you want to use the official one)
+* API: [eos-testapi.tokenika.io:8888](http://eos-testapi.tokenika.io:8888/)
+* P2P: [eos-testp2p.tokenika.io:9876](http://eos-testp2p.tokenika.io:9876/) (or [p2p-testnet1.eos.io:9876](http://p2p-testnet1.eos.io:9876/), if you want to use the official one)
 
 For endpoint configuration please refer to [this document](https://github.com/tokenika/teos/blob/master/ENDPOINT_CONFIGURATION.md).
 
