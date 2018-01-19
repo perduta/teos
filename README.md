@@ -195,7 +195,7 @@ output:
 
 ## Using `teos` as EOS API
 
-In our view, the real value of our efforts is actually the library that's behind `teos`. As we mentioned before, the `teosLib` library acts as a full-blown API for EOS.
+In our view, the real value of our efforts is actually the library that's behind `teos`. As we mentioned before, the `teoslib` library acts as a full-blown API for EOS.
 
 Let's consider a code snippet illustrating its usage:
 
