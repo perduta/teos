@@ -1,23 +1,24 @@
 cmake_minimum_required (VERSION 3.8)
 project ("teos")
 
-set(VERSION_MAJOR 0)
-set(VERSION_MINOR 5)
-set(cmake_build_type debug)
-set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake")
+set( VERSION_MAJOR 0 )
+set( VERSION_MINOR 5 )
+set( cmake_build_type debug )
+set ( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake" )
 #include(cotire)
-include("${PROJECT_SOURCE_DIR}/CMake/config.cmake")
+include( "${PROJECT_SOURCE_DIR}/CMake/config.cmake" )
 
-set(VERSION_MAJOR 0)
-set(VERSION_MINOR 5)
-set(CONFIG_JSON_FILE "teos_config.json")
-set(CONFIG_JSON_PATH "${CONFIG_JSON_FILE}")
-set(teos_HELPER_INSTALL_PATH "${CMAKE_SOURCE_DIR}/../eos/install" )
+set( TEST_ADDRESS "\"tokenika\"")
+set( TEST_HOST "\"eos-testapi.tokenika.io\"" )
+set( TEST_PORT "\"8888\"" )
+set( CONFIG_JSON_FILE "teos_config.json" )
+set( CONFIG_JSON_PATH "${CONFIG_JSON_FILE}" )
+set( teos_HELPER_INSTALL_PATH "${CMAKE_SOURCE_DIR}/../eos/install" )
 
-set(CONFIG_JSON "\"${CONFIG_JSON_PATH}\"")
-file(COPY ${CONFIG_JSON_PATH} DESTINATION "${CMAKE_BINARY_DIR}")
+set( CONFIG_JSON "\"${CONFIG_JSON_PATH}\"" )
+file( COPY ${CONFIG_JSON_PATH} DESTINATION "${CMAKE_BINARY_DIR}" )
 
-set(LOGGING_DIR "\"log\"")
+set( LOGGING_DIR "\"log\"" )
 configure_file (
    "${PROJECT_SOURCE_DIR}/teos_config.h.in"
    "${PROJECT_SOURCE_DIR}/teos_config.h"
@@ -47,6 +48,7 @@ find_package(Boost 1.62 REQUIRED COMPONENTS
   date_time 
   program_options 
   filesystem
+  chrono
   regex
 )
 if( Boost_FOUND )
@@ -67,25 +69,72 @@ endif()
 
 add_subdirectory(teoslib)
 
-set(APPL_NAME "teos")
-add_executable(${APPL_NAME} teos.cpp )
-target_include_directories( ${APPL_NAME} 
-  PRIVATE
-  ${BOOST_INCLUDEDIR}
-)
-target_link_libraries( ${APPL_NAME}
-  PRIVATE
-  teoslib
-  teos_helper
-)
+####################################### executables
 
-add_executable( "teos_lib_test" teos_lib_test.cpp )
-target_link_libraries( "teos_lib_test" 
-  PRIVATE
-  teoslib
-  teos_helper
-)
+macro( applLinkLibraries applName )
+
+  target_include_directories( ${applName} 
+    PRIVATE
+     ${Boost_INCLUDE_DIR}
+  )
+
+  target_link_libraries( ${applName}
+    PRIVATE
+      teoslib
+      teos_helper
+      eos_types
+      fc
+      eos_utilities
+  )
+
+  if( NOT EOS_ECC_IMPL STREQUAL openssl )
+    target_link_libraries( ${applName}
+      PRIVATE
+        ${SECP256K1_LIBRARIES}
+        ${GMP_LIBRARIES}
+    )
+  endif()
+
+  if( NOT (APPLE OR WIN32) )
+    set( pthread_library pthread )
+    target_link_libraries( ${applName} PUBLIC rt )
+  endif()
+
+  if( WIN32 )
+    if( NOT EOS_ECC_IMPL STREQUAL openssl )
+      target_link_libraries( ${applName}
+        PRIVATE
+          ${SECP256K1_LIBRARIES_DIR}/gcc.lib
+      )
+    endif()
+
+    target_link_libraries( ${applName}
+      PRIVATE
+        "$(WindowsSDK_LibraryPath)/x64/crypt32.lib"
+        "$(VC_ReferencesPath_VC_x64)/legacy_stdio_definitions.lib"
+        "Userenv.lib"
+    )
+  endif( WIN32 )
+
+  target_link_libraries( ${applName}
+    PRIVATE
+      ${OPENSSL_LIBRARIES}
+      ${Boost_LIBRARIES}
+      ${CMAKE_DL_LIBS}
+      ${CMAKE_THREAD_LIBS_INIT}
+  )
+
+endmacro( applLinkLibraries )
+
+add_executable(teos teos.cpp )
+applLinkLibraries( teos )
+install( TARGETS teos RUNTIME DESTINATION bin)
+
+add_executable(teos_lib_test teos_lib_test.cpp )
+applLinkLibraries( teos_lib_test )
+install( TARGETS teos_lib_test RUNTIME DESTINATION bin)
+
+####################################### /executables
 
 #cotire(${APPL_NAME})
 
-install( TARGETS ${APPL_NAME} RUNTIME DESTINATION bin)

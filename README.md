@@ -200,8 +200,8 @@ int main()
 {
   using namespace tokenika::teos;
 
-  teosCommand::host = "198.100.148.136";
-  teosCommand::port = "8888";
+  teosCommand::host = TEST_HOST;
+  teosCommand::port = TEST_PORT;
 
   ptree getInfoJson;
 
@@ -351,11 +351,11 @@ As the result of the compilation, you should be able to find those two files in 
 
 Open a terminal window, navigate to the `install/bin` folder and run `teos`:
 ```
-./teos 198.100.148.136:8888 get info
+./teos eos-testapi.tokenika.io:8888 get info
 ```
 The above command will connect to EOS full node running on one of our testnet servers.
 
-Alternatively, you can use the predefined placeholder `tokenika` instead of  `198.100.148.136:8888`:
+Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi.tokenika.io:8888`:
 
 ```
 ./teos tokenika get info
@@ -542,10 +542,10 @@ cd teos\install\bin
 And now you should be able to run `teos` and access EOS full node running on one of our servers:
 
 ```
-./teos 198.100.148.136:8888 get info
+./teos eos-testapi.tokenika.io:8888 get info
 ```
 
-Alternatively, you can use the predefined placeholder `tokenika` instead of  `198.100.148.136:8888`:
+Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi.tokenika.io:8888`:
 
 ```
 ./teos tokenika get info
