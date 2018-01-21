@@ -1,4 +1,4 @@
-# Tokenika's public EOS endpoint and command line interface
+# Tokenika's public EOS endpoint and Command Line Interface
 
 ## Rationale
 
@@ -28,7 +28,7 @@ Our plans include opening up EOS for smart-contract development on any platform,
 
 ## Public endpoint
 
-As `teos` is foremost an EOS client, this announcement includes opening up a publicly available endpoint as a gateway to trying out EOS and its testnet without the trouble of running your own full node. This endpoint can be accessed no matter if you're going to use `eosc`, the official CLI, or `teos`, our alternative.
+As `teos` is foremost an EOS client, this announcement includes opening up Tokenika's publicly accessible endpoint as a gateway for trying out EOS and the official testnet without the trouble of running your own full node. This endpoint can be accessed no matter if you're going to use `eosc`, the official CLI, or `teos`, our alternative.
 
 Our endpoint is available at [eos-testapi.tokenika.io](http://eos-testapi.tokenika.io/). It's not only fully featured, general purpose API but also has wallet API enabled for testing purposes - this should never be done on production!
 
@@ -362,19 +362,11 @@ As the result of the compilation, you should be able to find those two files in 
 
 Open a terminal window, navigate to the `install/bin` folder and run `teos`:
 ```
-<<<<<<< HEAD
 ./teos eos-testapi.tokenika.io:8888 get info
 ```
 The above command will connect to EOS full node running on one of our testnet servers.
 
 Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi.tokenika.io:8888`:
-=======
-./teos eos-testapi1.tokenika.io:8888 get info
-```
-The above command will connect to EOS full node running on one of our testnet servers.
-
-Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi1.tokenika.io:8888`:
->>>>>>> 7beee7e2a2af60ef8b9eac5fa8312a1e4e067c00
 
 ```
 ./teos tokenika get info
@@ -564,11 +556,7 @@ And now you should be able to run `teos` and access EOS full node running on one
 ./teos eos-testapi.tokenika.io:8888 get info
 ```
 
-<<<<<<< HEAD
 Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi.tokenika.io:8888`:
-=======
-Alternatively, you can use the predefined placeholder `tokenika` instead of  `eos-testapi1.tokenika.io:8888`:
->>>>>>> 7beee7e2a2af60ef8b9eac5fa8312a1e4e067c00
 
 ```
 ./teos tokenika get info

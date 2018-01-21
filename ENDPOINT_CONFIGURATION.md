@@ -23,6 +23,3 @@ block-interval-seconds = 2
 pending-txn-depth-limit = 60
 sync-fetch-span = 100
 ```
-
-
-
