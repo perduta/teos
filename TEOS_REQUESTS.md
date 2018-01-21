@@ -339,76 +339,126 @@ eosc wallet unlock
 ## {}/RESPONSE
 ## Unlocked: default
 
-###############################################################################
 
-eosc set contract \
->   ${initaAccount} \
->   ${contractSrcDir}/hello2.wast \
->   ${contractSrcDir}/hello2.abi
-1358707ms            main.cpp:1195                 main                 ] Failed with error: Assert Exception (10)
-status_code == 200: Error code 400
-: {"code":400,"message":"Bad Request","details":"allotted processing time was exceeded (3030010)\n\n\n\n\n\n\n"}
+## create account
 
+The command `eosc create account inita currency $ownerPublKey $activePublKey` executes the following sequence.
 
+**get info:**
+```
+# request
+{} 
 
-##
-## ${contractSet} ... set-contract json.
+# responce
+{ 
+  "server_version":"70fd94c3",
+  "head_block_num":121,
+  "last_irreversible_block_num":107,
+  "head_block_id":"0000007954e7bcc37c589ae91b0c44b31a1bb9fcd936271357fa95f01cf22515",
+  "head_block_time":"2018-01-20T19:15:03",
+  "head_block_producer":"initt",
+  "recent_slots":"1111111111111111111111111111111111111111111111111111111111111111",
+  "participation_rate":"1.00000000000000000"}
+```
 
-###############################################################################
+**wallet get_public_keys (/v1/wallet/get_public_keys):**
+```
+# request
+{} 
 
-eosc set contract   ${initaAccount}   ${contractSrcDir}/hello2.wast   ${contractSrcDir}/hello2.abi
-##
-## ${contractSet} ... set-contract json.
+# response
+["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV","$activePublKey"] 
+```
 
-###############################################################################
+**chain get_required_keys (/v1/chain/get_required_keys):**
+```
+# request
+{
+  "transaction":
+  {
+    "ref_block_num":121,
+    "ref_block_prefix":3919206524,
+    "expiration":"2018-01-20T19:15:33",
+    "scope":["eos","inita"],
+    "read_scope":[],
+    "messages":
+    [
+      {
+        "code":"eos",
+        "type":"newaccount",
+        "authorization":[
+          {"account":"inita",
+          "permission":"active"}
+        ],
+        "data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"
+      }
+    ],
+    "signatures":[]
+  },
+  "available_keys":
+  [
+    "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV","EOS7ZLRwXo7a1DTE3LB4mFrv2jCgPS56rnUBpz8aBbAfPCLk8A54o"
+  ]
+}
 
-eosc create account inita currency $ownerPublKey $activePublKey
-##
-## eosc create account  inita currency $ownerPublKey $activePublKey:
+# response
+{
+  "required_keys":["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"]
+}
+```
+
+**wallet sign_transaction (/v1/wallet/sign_transaction):**
 ## REQUEST httc.cpp [66]
-## POST /v1/chain/get_info HTTP/1.0
-## Host: localhost
-## content-length: 0
-## Accept: */*
-## Connection: close
-##
-##
-## /REQUEST
-## RESPONSE  httc.cpp [123]
-## {"server_version":"70fd94c3","head_block_num":121,"last_irreversible_block_num":107,"head_block_id":"0000007954e7bcc37c589ae91b0c44b31a1bb9fcd936271357fa95f01cf22515","head_block_time":"2018-01-20T19:15:03","head_block_producer":"initt","recent_slots":"1111111111111111111111111111111111111111111111111111111111111111","participation_rate":"1.00000000000000000"}/RESPONSE
-## REQUEST httc.cpp [66]
-## POST /v1/wallet/get_public_keys HTTP/1.0
-## Host: localhost
-## content-length: 0
-## Accept: */*
-## Connection: close
-##
-##
-## /REQUEST
-## RESPONSE  httc.cpp [123]
-## ["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV","$activePublKey"]/RESPONSE
-## REQUEST httc.cpp [66]
-## POST /v1/chain/get_required_keys HTTP/1.0
-## Host: localhost
-## content-length: 683
-## Accept: */*
-## Connection: close
-##
-## {"transaction":{"ref_block_num":121,"ref_block_prefix":3919206524,"expiration":"2018-01-20T19:15:33","scope":["eos","inita"],"read_scope":[],"messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],"signatures":[]},"available_keys":["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV","EOS7ZLRwXo7a1DTE3LB4mFrv2jCgPS56rnUBpz8aBbAfPCLk8A54o"]}
-## /REQUEST
-## RESPONSE  httc.cpp [123]
-## {"required_keys":["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"]}/RESPONSE
-## REQUEST httc.cpp [66]
-## POST /v1/wallet/sign_transaction HTTP/1.0
+## POST  HTTP/1.0
 ## Host: localhost
 ## content-length: 663
 ## Accept: */*
 ## Connection: close
 ##
-## [{"ref_block_num":121,"ref_block_prefix":3919206524,"expiration":"2018-01-20T19:15:33","scope":["eos","inita"],"read_scope":[],"messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],"signatures":[]},["EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"],"0000000000000000000000000000000000000000000000000000000000000000"]
-## /REQUEST
+## [
+```
+# request
+{
+  "ref_block_num":121,
+  "ref_block_prefix":3919206524,
+  "expiration":"2018-01-20T19:15:33",
+  "scope":["eos","inita"],
+  "read_scope":[],
+  "messages":
+  [
+    {
+      "code":"eos",
+      "type":"newaccount",
+      "authorization":
+      [
+        {
+          "account":"inita",
+          "permission":"active"}
+      ],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"
+    }
+  ],
+  "signatures":[]
+},
+[
+  "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"
+],"0000000000000000000000000000000000000000000000000000000000000000"]
+```
+```
 ## RESPONSE  httc.cpp [123]
-## {"ref_block_num":121,"ref_block_prefix":3919206524,"expiration":"2018-01-20T19:15:33","scope":["eos","inita"],"read_scope":[],"messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],"signatures":["1f1989377853b7c1065b228d1f62835a36602881fe0db3bad5ee0eea9274b41cb54fb96e44ec7cd824872fc21ef855efd4f794c7431a316eb2891d7e2028fa2107"]}/RESPONSE
+## {
+  "ref_block_num":121,
+  "ref_block_prefix":3919206524,
+  "expiration":"2018-01-20T19:15:33",
+  "scope":["eos","inita"],
+  "read_scope":[],
+  "messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],
+  "signatures":["1f1989377853b7c1065b228d1f62835a36602881fe0db3bad5ee0eea9274b41cb54fb96e44ec7cd824872fc21ef855efd4f794c7431a316eb2891d7e2028fa2107"]
+  }
+/RESPONSE
+```
+
+chain push_transaction
+```
 ## REQUEST httc.cpp [66]
 ## POST /v1/chain/push_transaction HTTP/1.0
 ## Host: localhost
@@ -416,10 +466,18 @@ eosc create account inita currency $ownerPublKey $activePublKey
 ## Accept: */*
 ## Connection: close
 ##
-## {"ref_block_num":121,"ref_block_prefix":3919206524,"expiration":"2018-01-20T19:15:33","scope":["eos","inita"],"read_scope":[],"messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],"signatures":["1f1989377853b7c1065b228d1f62835a36602881fe0db3bad5ee0eea9274b41cb54fb96e44ec7cd824872fc21ef855efd4f794c7431a316eb2891d7e2028fa2107"]}
+## {
+  "ref_block_num":121,
+  "ref_block_prefix":3919206524,
+  "expiration":"2018-01-20T19:15:33",
+  "scope":["eos","inita"],
+  "read_scope":[],
+  "messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],
+  "signatures":["1f1989377853b7c1065b228d1f62835a36602881fe0db3bad5ee0eea9274b41cb54fb96e44ec7cd824872fc21ef855efd4f794c7431a316eb2891d7e2028fa2107"]}
 ## /REQUEST
 ## RESPONSE  httc.cpp [123]
 ## {"transaction_id":"b255e30f015841581530e22358c09ca2165757ed17d1e88d591406bfdbc3eacb","processed":{"ref_block_num":121,"ref_block_prefix":3919206524,"expiration":"2018-01-20T19:15:33","scope":["eos","inita"],"signatures":["1f1989377853b7c1065b228d1f62835a36602881fe0db3bad5ee0eea9274b41cb54fb96e44ec7cd824872fc21ef855efd4f794c7431a316eb2891d7e2028fa2107"],"messages":[{"code":"eos","type":"newaccount","authorization":[{"account":"inita","permission":"active"}],"data":{"creator":"inita","name":"currency","owner":{"threshold":1,"keys":[{"key":"$ownerPublKey","weight":1}],"accounts":[]},"active":{"threshold":1,"keys":[{"key":"EOS7ZLRwXo7a1DTE3LB4mFrv2jCgPS56rnUBpz8aBbAfPCLk8A54o","weight":1}],"accounts":[]},"recovery":{"threshold":1,"keys":[],"accounts":[{"permission":{"account":"inita","permission":"active"},"weight":1}]},"deposit":"0.0001 EOS"},"hex_data":"000000000093dd740000001e4d75af4601000000010252ced051e4e79a876994c2aaa3e8eb6b36805a6fb9c44be5415e1526fbb225b90100000100000001035f98de8165e69a5fd3c6d5b1d19342dad88989a2fbdc565544d2240dcbba88b7010000010000000001000000000093dd7400000000a8ed32320100010000000000000004454f5300000000"}],"output":[{"notify":[],"deferred_trxs":[]}]}}/RESPONSE
+```
 ## {
 ##   "transaction_id": "b255e30f015841581530e22358c09ca2165757ed17d1e88d591406bfdbc3eacb",
 ##   "processed": {
