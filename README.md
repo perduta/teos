@@ -1,4 +1,4 @@
-# Tokenika's public EOS endpoint and Command Line Interface
+# TEOS - an alternative EOS command line interface and publicly available endpoint
 
 ## Rationale
 
@@ -291,7 +291,7 @@ wallet lock all
 wallet unlock
 ```
 
-## Building on Ubuntu
+## Building on Ubuntu 16.04
 
 #### Dependencies
 
@@ -388,6 +388,7 @@ Or you can test private key generation:
 
 ```
 ./teos tokenika create key
+
 ```
 
 ```
@@ -409,7 +410,7 @@ Or just:
 ./teos get info
 ```
 
-## Building on Windows
+## Building on Windows 10
 
 #### Prerequisites
 
@@ -536,7 +537,7 @@ git clone https://github.com/tokenika/teos.git
 Still using *Visual Studio 2017 Developer Command Prompt*, navigate to the `teos\teos` folder and run the following commands:
 ```
 cd teos\teos
-mkdir bulid && cd build
+mkdir build && cd build
 cmake -G "Visual Studio 15 2017 Win64" ..
 msbuild teos.sln
 msbuild INSTALL.vcxproj
@@ -565,6 +566,7 @@ You can try simple queries, e.g.
 
 ```
 ./teos tokenika get block 25
+
 ```
 
 ```
